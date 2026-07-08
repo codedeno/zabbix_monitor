@@ -1,0 +1,644 @@
+openapi: 3.0.0
+info:
+  title: NetBackup Alta View API
+  version: "11.0"
+  description: |
+    The NetBackup Alta View APIs provide access to Veritas Alta View resources.
+externalDocs:
+  description: Getting Started Guide
+  url: http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started/
+servers:
+  - url: '/netbackup'
+paths:
+  /alta-view/servers:
+    post:
+      description: |
+        Adds Veritas Alta View to NetBackup.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|ADD|`
+
+        Following permissions are also required.\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|SERVICE-PRINCIPAL|`\
+        Requires Operation: `|OPERATIONS|ADD|`
+      tags:
+        - Veritas Alta View
+      requestBody:
+        description: The request body of the server to be created.
+        content:
+          multipart/vnd.netbackup+form-data;version=11.0:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  description: The Alta View registration file.
+                  type: string
+                  format: binary
+                proxyEnabled:
+                  type: boolean
+                  description: Specifies that a proxy server is used for communication with the Alta View Server.
+                proxyId:
+                  type: integer
+                  description: Specifies the id of proxy server if used for communication with the Alta View Server.
+        required: true
+      responses:
+        "201":
+          description: |
+            Successfully added the Veritas Alta View.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/configureAltaViewServerResponse"
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "409":
+          description: The Veritas Alta View Platform is already added.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "415":
+          $ref: ./common.yaml#/components/responses/errorUnsupportedMediaType
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    get:
+      description: |
+        Retrieve the details of Alta View.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Veritas Alta View
+      responses:
+        "200":
+          description: |
+            Successfully retrieved the Veritas Alta View details.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/listAltaViewServerResponse"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  "/alta-view/servers/{altaviewServerId}":
+    delete:
+      description: |
+        Delete the details of Alta View.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|DELETE|`
+
+        Following permissions are also required.\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|SERVICE-PRINCIPAL|`\
+        Requires Operation: `|OPERATIONS|DELETE|`
+      tags:
+        - Veritas Alta View
+      parameters:
+        - $ref: "#/components/parameters/altaviewServerId"
+      responses:
+        "204":
+          description: |
+            Successfully deleted the Veritas Alta View details.
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    patch:
+      description: |
+        Update the proxy configuration of Alta View.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|UPDATE|`
+
+        Following permissions are also required if API key is also expired.\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|SERVICE-PRINCIPAL|`\
+        Requires Operation: `|OPERATIONS|ADD|`\
+        Requires Operation: `|OPERATIONS|DELETE|`
+      tags:
+        - Veritas Alta View
+      parameters:
+        - $ref: "#/components/parameters/altaviewServerId"
+      requestBody:
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/updateAltaViewServerRequest"
+        description: Specifies the JSON body that contains the updated Alta View details.
+        required: true
+      responses:
+        "204":
+          description: |
+            Successfully updated the Veritas Alta View details.
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  /alta-view/data-collection/status:
+    post:
+      description: |
+        Saves the state of data collection from NetBackup primary.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|UPDATE|`
+
+        Following permissions are also required.\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|SERVICE-PRINCIPAL|`\
+        Requires Operation: `|OPERATIONS|UPDATE|`
+      tags:
+        - Veritas Alta View
+      requestBody:
+        description: The request body datacollection status.
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/dataCollectionRequest"
+        required: true
+      responses:
+        "204":
+          description: |
+            Successfully saved the state for data collection.
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "415":
+          $ref: ./common.yaml#/components/responses/errorUnsupportedMediaType
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    get:
+      description: |
+        Retrieves the state of data collection from NetBackup primary.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+
+        Following permissions are also required.\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|SERVICE-PRINCIPAL|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Veritas Alta View
+      responses:
+        "200":
+          description: Status of data collection from NetBackup primary.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/dataCollectionResponse"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+components:
+  parameters:
+    altaviewServer:
+      name: altaviewServer
+      in: path
+      description: The host name of Alta View.
+      required: true
+      schema:
+        type: string
+    altaviewServerId:
+      name: altaviewServerId
+      in: path
+      description: The id of Alta View server
+      required: true
+      schema:
+        type: string
+  schemas:
+    altaviewCACertList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/altaviewCACert"
+    altaviewCACert:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+        - links
+      properties:
+        id:
+          type: string
+          description: The certificate authority (CA) fingerprint of Alta View.
+        type:
+          type: string
+          description: The resource type.
+          enum:
+            - altaviewCACert
+        attributes:
+          $ref: "#/components/schemas/altaviewCACertAttributes"
+        links:
+          type: object
+          properties:
+            self:
+              $ref: ./common.yaml#/components/schemas/resourceSelfLink
+    altaviewCACertAttributes:
+      type: object
+      properties:
+        fingerprint:
+          type: string
+          description: The certificate authority (CA) fingerprint of Alta View.
+        subjectDN:
+          type: string
+          description: The subject distinguished name.
+        server:
+          type: string
+          description: The host name of Alta View.
+        isRootCATrusted:
+          type: boolean
+          default: false
+          description: If `true`, indicates that the certificate issuer is trusted by NetBackup master server.
+        issuedTo:
+          type: string
+          description: Common name of the entity to whom the certificate has been issued.
+        issuedBy:
+          type: string
+          description: Common name of the entity who has issued the certificate.
+        validFrom:
+          type: string
+          format: date-time
+          description: The start date and time of the validity of certificate in ISO 8601 timestamp.
+        validTo:
+          type: string
+          format: date-time
+          description: The end date and time of the certificate in ISO 8601 timestamp.
+      required:
+        - fingerprint
+        - server
+    updateAltaViewServerRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - attributes
+          properties:
+            type:
+              type: string
+              description: The resource type to be created.
+              enum:
+                - updateAltaViewServer
+            attributes:
+              $ref: "#/components/schemas/updateAltaViewServerData"
+    updateAltaViewServerData:
+      type: object
+      properties:
+        proxyEnabled:
+          type: boolean
+          description: Specifies that a proxy server is used for communication with the Alta View Server.
+        proxyId:
+          type: string
+          description: |
+            Specifies the id of proxy server if used for communication with the Alta View Server.
+    configureAltaViewServerRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - attributes
+          properties:
+            type:
+              type: string
+              description: The resource type to be created.
+              enum:
+                - newAltaViewServer
+            attributes:
+              $ref: "#/components/schemas/altaviewServerData"
+    altaviewServerData:
+      type: object
+      required:
+        - registration-payload
+      properties:
+        registration-payload:
+          type: string
+          description: The registration data for Alta View Platform.
+        proxyEnabled:
+          type: boolean
+          default: false
+          description: Specifies that a proxy server is used for communication with the Alta View Server.
+        proxyId:
+          type: integer
+          description: |
+            Specifies the id of proxy server if used for communication with the Alta View Server. This should be populated only if proxyEnabled is true.
+    updateAltaViewDataCenterRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - attributes
+          properties:
+            type:
+              type: string
+              description: The resource type to be created.
+              enum:
+                - updateAltaViewDataCenter
+            attributes:
+              $ref: "#/components/schemas/updateAltaViewDataCenter"
+    updateAltaViewDataCenter:
+      type: object
+      required:
+        - altaviewServer
+        - dataCenter
+      properties:
+        altaviewServer:
+          type: string
+          description: The Host name or IP of Veritas Alta View Platform.
+        dataCenter:
+          type: string
+          description: The data center of Veritas Alta View Platform.
+    configureAltaViewServerResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/altaviewServerResponse"
+    altaviewServerResponse:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+      properties:
+        id:
+          type: string
+          description: The enterprise ID of Veritas Alta View Platform.
+        type:
+          type: string
+          description: Represents Veritas Alta View Platform object.
+          enum:
+            - altaviewServer
+        attributes:
+          type: object
+          required:
+            - server
+            - customerId
+            - proxyEnabled
+            - dataCenter
+            - dataCollection
+          properties:
+            server:
+              type: string
+              description: The Hostname or IP of Veritas Alta View Platform.
+            customerId:
+              type: string
+              description: The id of registered customer in Alta View.
+            proxyEnabled:
+              type: boolean
+              description: Specifies that a proxy server is used for communication with the Alta View Server.
+            dataCenter:
+              type: string
+              description: The data center of Veritas Alta View Platform.
+            dataCollection:
+              type: boolean
+              description: Specifies that data collection is enabled for Veritas Alta View Platform.
+        relationships:
+          $ref: "#/components/schemas/altaviewServerRelations"
+    listAltaViewServerResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/getAltaViewServerResponseDetails"
+    getAltaViewServerResponseDetails:
+      type: array
+      items:
+        type: object
+        required:
+          - id
+          - type
+          - attributes
+        properties:
+          id:
+            type: string
+            description: The enterprise ID of Veritas Alta View Platform.
+          type:
+            type: string
+            description: Represents Veritas Alta View Platform object.
+            enum:
+              - altaviewServer
+          attributes:
+            type: object
+            required:
+              - server
+              - customerId
+              - proxyEnabled
+              - dataCenter
+            properties:
+              server:
+                type: string
+                description: The Hostname or IP of Veritas Alta View Platform.
+              customerId:
+                type: string
+                description: The id of registered customer in Alta View.
+              proxyEnabled:
+                type: boolean
+                description: Specifies that a proxy server is used for communication with the Alta View Server.
+              dataCenter:
+                type: string
+                description: The data center of Veritas Alta View Platform.
+          relationships:
+            $ref: "#/components/schemas/altaviewServerRelations"
+    altaviewCACertResponseAttributes:
+      type: object
+      properties:
+        fingerprint:
+          type: string
+          description: The certificate authority (CA) fingerprint of Alta View.
+        server:
+          type: string
+          description: The host name of Alta View.
+        isRootCATrusted:
+          type: boolean
+          default: false
+          description: If `true`, indicates that the certificate issuer is trusted by NetBackup master server.
+    altaviewServerRelations:
+      type: object
+      properties:
+        proxyServer:
+          properties:
+            data:
+              $ref: "#/components/schemas/proxyServerRelationDefinition"
+          required:
+            - data
+    proxyServerRelationDefinition:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - proxyServer
+        id:
+          type: string
+      required:
+        - type
+        - id
+    dataCollectionRequest:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - dcInfo
+            attributes:
+              $ref: "#/components/schemas/dataCollectionInfo"
+    tokenGenerationRequest:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - tokenGenerateRequest
+            attributes:
+              type: object
+              required:
+                - token
+              description: Request data for access and refresh token pair generation.
+              properties:
+                token:
+                  type: string
+                  description: Temporary token to consume for access and refresh token pair generation.
+    dataCollectionResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - dcState
+            id:
+              type: string
+            attributes:
+              $ref: "#/components/schemas/dataCollectionStatus"
+    dataCollectionInfo:
+      type: object
+      description: State of data collection from NetBackup primary.
+      properties:
+        hostName:
+          type: string
+          description: The host name for the communicating host.
+        state:
+          type: string
+          description: Indicates the state of the host. Possible values are null, ACTIVATED, DEACTIVATED.
+          enum:
+            - ACTIVATED
+            - DEACTIVATED
+    dataCollectionStatus:
+      type: object
+      description: State of data collection from NetBackup primary.
+      properties:
+        state:
+          type: string
+          description: Indicates the state of the host. Possible values are null, ACTIVATED, DEACTIVATED.
+          enum:
+            - ACTIVATED
+            - DEACTIVATED
+        connectionState:
+          type: string
+          description: Indicates the WebSocket connection state. Possible values are null, CONNECTED, DISCONNECTED.
+          enum:
+            - CONNECT
+            - DISCONNECTED
+        closeStatus:
+          type: string
+          description: |
+            Indicates the close status with which the websocket socket is closed.
+          enum:
+            - NORMAL_CLOSURE
+            - GOING_AWAY
+            - PROTOCOL_ERROR
+            - CANNOT_ACCEPT
+            - NO_STATUS_CODE
+            - CLOSED_ABNORMALLY
+            - NOT_CONSISTENT
+            - VIOLATED_POLICY
+            - TOO_BIG
+            - NO_EXTENSION
+            - UNEXPECTED_CONDITION
+            - SERVICE_RESTART
+            - TRY_AGAIN_LATER
+            - TLS_HANDSHAKE_FAILURE
+            - GENERIC_CLOSE
+            - REFRESH_TOKEN_EXPIRED
+            - REFRESH_TOKEN_ALREADY_CONSUMED
+            - REFRESH_TOKEN_INVALID
+            - ALTA_SERVER_ERROR
+            - ALTA_CREDENTIAL_NOT_FOUND
+        closeReason:
+          type: string
+          description: |
+            Indicates the close reason with which the websocket is closed
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Authorization
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - apiKeyAuth: []
+  - cookieAuth: []
+  - jwtAuth: []

@@ -1,0 +1,892 @@
+openapi: 3.0.0
+info:
+  title: NetBackup Troubleshooting API
+  version: "11.0"
+  description: |
+    The NetBackup Troubleshooting API provides information about the NetBackup status codes. This API also provides access to the NetBackup log check, log settings, log collect, and log upload services.
+externalDocs:
+  description: Getting Started Guide
+  url: http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started/
+servers:
+  - url: '/netbackup'
+    description: NetBackup Master
+paths:
+  "/status-codes/{statusCode}":
+    get:
+      description: |
+        Provides information about the specified NetBackup status code.
+
+        **Access Control**\
+        Enforcement Type: `None`
+      tags:
+        - Status Codes
+      parameters:
+        - in: path
+          description: The NetBackup status code.
+          name: statusCode
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successfully returned information about the specified NetBackup status code.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/getStatusCodeResponse"
+        "400":
+          description: The specified NetBackup status code is invalid.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: The NetBackup status code was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+  /troubleshooting/log-records:
+    get:
+      description: |
+        Get the number of records that are in-progress.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|TROUBLESHOOTING|`\
+        Requires Operation: `|OPERATIONS|MANAGE|TROUBLESHOOTING|COLLECT-LOG|`
+      tags:
+        - Log Records
+      responses:
+        "200":
+          description: Successfully retrieved the in-progress record count.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/logRecordsGetResponse"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    post:
+      description: |
+        Create an empty log record.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|TROUBLESHOOTING|`\
+        Requires Operation: `|OPERATIONS|MANAGE|TROUBLESHOOTING|COLLECT-LOG|`
+      tags:
+        - Log Records
+      requestBody:
+        description: The JSON body that contains the information for the request.
+        required: true
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/logRecordPostRequest"
+      responses:
+        "201":
+          description: Successfully created the new log record.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/logRecordPostResponse"
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  "/troubleshooting/log-records/{recordId}/collect":
+    post:
+      description: |
+        Create a task to gather the logs for the specified record ID.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|TROUBLESHOOTING|`\
+        Requires Operation: `|OPERATIONS|MANAGE|TROUBLESHOOTING|COLLECT-LOG|`
+      tags:
+        - Log Records
+      parameters:
+        - $ref: "#/components/parameters/recordId"
+      requestBody:
+        description: The JSON body that contains the information for the request.
+        required: true
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/logCollectByIdPostRequest"
+      responses:
+        "202":
+          description: Request accepted.
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  "/troubleshooting/log-records/{recordId}/upload":
+    post:
+      description: |
+        Create a task to upload the logs for the specified record ID.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|TROUBLESHOOTING|`\
+        Requires Operation: `|OPERATIONS|MANAGE|TROUBLESHOOTING|UPLOAD-LOG|`
+      tags:
+        - Log Records
+      parameters:
+        - $ref: "#/components/parameters/recordId"
+      requestBody:
+        description: The JSON body that contains the information for the request.
+        required: true
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/logUploadByIdPostRequest"
+      responses:
+        "202":
+          description: Request accepted.
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  "/troubleshooting/log-records/{recordId}/settings":
+    post:
+      description: |
+        Update the logging level settings to the host and its components for the specified \
+        record ID.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|TROUBLESHOOTING|`\
+        Requires Operation: `|OPERATIONS|MANAGE|TROUBLESHOOTING|COLLECT-LOG|`
+      tags:
+        - Log Records
+      parameters:
+        - $ref: "#/components/parameters/recordId"
+      requestBody:
+        description: The JSON body that contains the information for the request.
+        required: true
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/logSettingsByIdPostRequest"
+      responses:
+        "202":
+          description: Request accepted.
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    get:
+      description: |
+        Get the logging level values of the list of hosts and their corresponding components for the specified record \
+        ID.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|TROUBLESHOOTING|`\
+        Requires Operation: `|OPERATIONS|MANAGE|TROUBLESHOOTING|COLLECT-LOG|`
+      tags:
+        - Log Records
+      parameters:
+        - $ref: "#/components/parameters/recordId"
+        - name: X-NetBackup-Skip-Component-Details
+          in: header
+          description: |
+            This optional header instructs NetBackup to skip fetching the component details. If set to `true`, NetBackup does not fetch the component details from the hosts. The default setting is `false`, and the component details are fetched from the hosts. This param is mutually exclusive to the filter param.
+          required: false
+          schema:
+            type: boolean
+        - name: filter
+          description: |
+            Filter criteria syntax is based on OData standards. Filtering is supported on the following attributes:
+            |Name|Supported Operators|Description|Schema|
+            |---|---|---|---|
+            |hostName|eq contains endswith startswith|The name of the host. Example: `hostName eq 'hostname'` This param is mutually exclusive to the X-NetBackup-Skip-Component-Details param.|string|
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully retrieved the logging level information for the specified record ID.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/logSettingsByIdGetResponse"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  "/troubleshooting/log-records/{recordId}":
+    get:
+      description: |
+        Get the details for the specified record ID.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|TROUBLESHOOTING|`\
+        Requires Operation: `|OPERATIONS|MANAGE|TROUBLESHOOTING|COLLECT-LOG|`
+      tags:
+        - Log Records
+      parameters:
+        - $ref: "#/components/parameters/recordId"
+      responses:
+        "200":
+          description: Successfully retrieved the details for the specified record ID.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/logRecordByIdGetResponse"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    delete:
+      description: |
+        Delete the collected logs for the specified record ID. This action also terminates any in-progress task.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|TROUBLESHOOTING|`\
+        Requires Operation: `|OPERATIONS|MANAGE|TROUBLESHOOTING|COLLECT-LOG|`
+      tags:
+        - Log Records
+      parameters:
+        - $ref: "#/components/parameters/recordId"
+        - $ref: ./common.yaml#/components/headers/auditReasonHeader
+      responses:
+        "202":
+          description: Request accepted.
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Authorization
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    recordId:
+      in: path
+      description: The record identifier.
+      name: recordId
+      required: true
+      schema:
+        type: string
+  schemas:
+    getStatusCodeResponse:
+      description: The status code information.
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          description: Contains the status code information.
+          type: object
+          required:
+            - type
+            - id
+            - attributes
+          properties:
+            type:
+              description: The resource type.
+              type: string
+              enum:
+                - statusCode
+            id:
+              description: The status code identifier.
+              type: string
+            attributes:
+              description: The status code information.
+              type: object
+              required:
+                - statusMessage
+              properties:
+                statusMessage:
+                  description: The message corresponding to the specified NetBackup status code.
+                  type: string
+      example:
+        data:
+          type: statusCode
+          id: "156"
+          attributes:
+            statusMessage: snapshot error encountered
+    logRecordsGetResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - id
+            - attributes
+          properties:
+            type:
+              description: The response type.
+              type: string
+              enum:
+                - logRecordsResponse
+            id:
+              description: The response type.
+              type: string
+              enum:
+                - logRecordsResponse
+            attributes:
+              type: object
+              required:
+                - count
+              properties:
+                count:
+                  description: The total number of in-progress records.
+                  type: integer
+            links:
+              type: object
+              properties:
+                self:
+                  type: object
+                  properties:
+                    href:
+                      type: string
+    logRecordPostRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - attributes
+          properties:
+            type:
+              description: The request type.
+              type: string
+              enum:
+                - logRecordCreateRequest
+            attributes:
+              type: object
+              required:
+                - recordType
+                - recordEntity
+              properties:
+                recordType:
+                  description: The record type.
+                  type: string
+                  enum:
+                    - JOB
+                recordEntity:
+                  description: The job identifier.
+                  type: string
+    logRecordPostResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - id
+            - attributes
+          properties:
+            type:
+              description: The response type.
+              type: string
+              enum:
+                - logRecordCreateResponse
+            id:
+              description: The record identifier.
+              type: string
+            attributes:
+              type: object
+              required:
+                - recordType
+                - recordEntity
+                - status
+              properties:
+                recordType:
+                  description: The record type.
+                  type: string
+                  enum:
+                    - JOB
+                recordEntity:
+                  description: The job identifier.
+                  type: string
+                status:
+                  description: The status of the record creation request.
+                  type: string
+                  enum:
+                    - COMPLETED
+                    - PENDING
+                    - IN-PROGRESS
+                    - FAILED
+            links:
+              type: object
+              properties:
+                self:
+                  type: object
+                  properties:
+                    href:
+                      type: string
+    logCheckByIdPostRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - attributes
+          properties:
+            type:
+              description: The request type.
+              type: string
+              enum:
+                - logCheckRequest
+            attributes:
+              type: object
+              required:
+                - recordType
+                - recordEntity
+              properties:
+                recordType:
+                  description: The record type.
+                  type: string
+                  enum:
+                    - JOB
+                recordEntity:
+                  description: The job identifier.
+                  type: string
+    logCollectByIdPostRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - attributes
+          properties:
+            type:
+              description: The request type.
+              type: string
+              enum:
+                - logCollectRequest
+            attributes:
+              type: object
+              required:
+                - recordType
+                - recordEntity
+              properties:
+                recordType:
+                  description: The record type.
+                  type: string
+                  enum:
+                    - JOB
+                recordEntity:
+                  description: The job identifier.
+                  type: string
+    logUploadByIdPostRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - attributes
+          properties:
+            type:
+              description: The request type.
+              type: string
+              enum:
+                - logUploadRequest
+            attributes:
+              type: object
+              required:
+                - supportCase
+                - sftpHost
+                - sftpPort
+                - username
+                - password
+                - targetFolder
+                - fingerprint
+              properties:
+                supportCase:
+                  description: The identifier of the support case.
+                  type: string
+                sftpHost:
+                  description: The SFTP host name.
+                  type: string
+                sftpPort:
+                  description: The SFTP port number.
+                  type: string
+                username:
+                  description: The SFTP credentials.
+                  type: string
+                password:
+                  description: The SFTP password.
+                  type: string
+                targetFolder:
+                  description: The absolute path for the upload.
+                  type: string
+                fingerprint:
+                  description: The SHA256 fingerprint of the SFTP host key, in Base64 format.
+                  type: string
+                alternativeFingerprints:
+                  description: SHA256 fingerprints of alternative SFTP host keys, in Base64 format.
+                  type: array
+                  items:
+                    type: string
+    logSettingsByIdPostRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - attributes
+          properties:
+            type:
+              description: The request type.
+              type: string
+              enum:
+                - logSettingsRequest
+            attributes:
+              type: object
+              required:
+                - host
+              properties:
+                host:
+                  $ref: "#/components/schemas/logSettingsAttributes"
+    logSettingsByIdGetResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - id
+            - attributes
+          properties:
+            type:
+              description: The response type.
+              type: string
+              enum:
+                - logSettingsResponse
+            id:
+              description: The record identifier.
+              type: string
+            attributes:
+              type: object
+              properties:
+                hosts:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/logSettingsAttributes"
+            links:
+              type: object
+              properties:
+                self:
+                  type: object
+                  properties:
+                    href:
+                      type: string
+    logSettingsAttributes:
+      type: object
+      required:
+        - hostType
+        - hostName
+        - components
+      properties:
+        hostType:
+          description: The host type.
+          type: string
+          enum:
+            - PRIMARY
+            - MEDIA
+            - CLIENT
+        hostName:
+          description: The host name.
+          type: string
+        legacyComponents:
+          type: array
+          items:
+            required:
+              - componentName
+              - loggingLevel
+            properties:
+              componentName:
+                description: The component name. This is case sensitive.
+                type: string
+              loggingLevel:
+                description: The component logging level.
+                type: string
+                enum:
+                  - SAME_AS_GLOBAL
+                  - NO_LOGGING
+                  - MINIMUM_LOGGING
+                  - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+        vxulComponents:
+          type: array
+          items:
+            required:
+              - componentName
+              - debugLevel
+              - diagnosticLevel
+            properties:
+              componentName:
+                description: The component name. This is case sensitive.
+                type: string
+              debugLevel:
+                description: |
+                  The component verbosity level for the debug log messages.
+                  (Debug logs are intended for Veritas engineers.) Valid values are 0 through 6.
+                type: string
+                enum:
+                  - SAME_AS_GLOBAL
+                  - NO_LOGGING
+                  - MINIMUM_LOGGING
+                  - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+              diagnosticLevel:
+                description: |
+                  The component verbosity level for the diagnostic log messages.
+                  (Diagnostic logs are intended for NetBackup administrators and users.)
+                  Valid values are 0 through 6. Zero (0) means no debug messages.
+                type: string
+                enum:
+                  - SAME_AS_GLOBAL
+                  - NO_LOGGING
+                  - MINIMUM_LOGGING
+                  - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+        miscellaneousSettings:
+          type: array
+          items:
+            required:
+              - settingType
+              - settingValue
+            properties:
+              settingType:
+                description: |
+                  The setting type. This is case sensitive. Examples of types that are supported:
+                  * Debug_Database
+                  * ENABLE_CRITICAL_PROCESS_LOGGING
+                  * JM_VERBOSE
+                  * PEM_VERBOSE
+                  * RB_VERBOSE
+                  * VERBOSE
+                type: string
+              settingValue:
+                description: The setting value.
+                type: string
+                enum:
+                  - YES
+                  - NO
+                  - NO_LOGGING
+                  - MINIMUM_LOGGING
+                  - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+    logRecordByIdGetResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - id
+            - attributes
+          properties:
+            type:
+              description: The response type.
+              type: string
+              enum:
+                - logRecordResponse
+            id:
+              description: The record identifier.
+              type: string
+            attributes:
+              type: object
+              required:
+                - recordType
+                - recordEntity
+                - currentTask
+                - status
+                - estimatedSize
+                - completedSize
+                - logRecordStart
+                - logRecordEnd
+                - stagingDir
+                - statusCode
+                - hosts
+              properties:
+                recordType:
+                  description: The record type.
+                  type: string
+                  enum:
+                    - JOB
+                recordEntity:
+                  description: The job identifier.
+                  type: string
+                currentTask:
+                  description: Current record task.
+                  type: string
+                  enum:
+                    - CHECK
+                    - COLLECT
+                    - UPLOAD
+                status:
+                  description: The status of the task for the record.
+                  type: string
+                  enum:
+                    - PENDING
+                    - IN-PROGRESS
+                    - COMPLETED
+                    - FAILED
+                    - CREATED
+                    - PARTIAL
+                estimatedSize:
+                  description: The estimated log record size.
+                  type: number
+                completedSize:
+                  description: The completed log record size.
+                  type: number
+                logRecordStart:
+                  description: The start time of the log record, in ISO 8601 format.
+                  type: string
+                  format: date-time
+                logRecordEnd:
+                  description: The end time of the log record, in ISO 8601 format.
+                  type: string
+                  format: date-time
+                stagingDir:
+                  description: The base directory of the log record staging area.
+                  type: string
+                statusCode:
+                  description: The status code of the log record.
+                  type: integer
+                  format: int64
+                hosts:
+                  type: array
+                  items:
+                    required:
+                      - hostType
+                      - hostName
+                      - status
+                    properties:
+                      hostType:
+                        description: The host type.
+                        type: string
+                        enum:
+                          - PRIMARY
+                          - MEDIA
+                          - CLIENT
+                      hostName:
+                        description: The host name.
+                        type: string
+                      status:
+                        description: The status code of the host.
+                        type: integer
+            links:
+              type: object
+              properties:
+                self:
+                  type: object
+                  properties:
+                    href:
+                      type: string
+security:
+  - apiKeyAuth: []
+  - cookieAuth: []
+  - jwtAuth: []

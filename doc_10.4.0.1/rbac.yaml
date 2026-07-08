@@ -1,0 +1,1203 @@
+openapi: 3.0.0
+info:
+  title: NetBackup RBAC Administration API
+  version: "11.0"
+  description: |
+    ## Deprecated ##
+    These APIs are no longer used to control access to NetBackup.\
+    This API set has been deprecated due to a redesign of NetBackup role based access control.
+
+    Any RBAC configuration data created using the APIs defined in the `/rbac` sub-context is
+    now read-only. This data remains available to help create similar access control using the new APIs found in the `/access-control` sub-context.\
+
+    See the latest Release Notes as well as the security section of the Administrator's Guide located in the help content of the Web UI for documentation on
+    how to configure NetBackup access control.
+externalDocs:
+  description: Getting Started Guide
+  url: http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started/
+servers:
+  - url: '/netbackup'
+    description: NetBackup Master
+paths:
+  /rbac/roles:
+    get:
+      deprecated: true
+      description: |
+        Returns a list of roles that were configured with the previous version of NetBackup RBAC.\
+
+        This API returns RBAC configuration data that is no longer used to control access to NetBackup.\
+        This data has been retained to aid in configuring access control using the updated interfaces.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.\
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|ACCESS-CONTROL|LEGACY|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Roles
+      parameters:
+        - $ref: ./common.yaml#/components/parameters/metaData
+        - name: include
+          description: |
+            Appends the included section in the response payload with details about the relationships that are specified in the include query. The include query is the name of the relationship, which is "permissions".
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - permissions
+      responses:
+        "200":
+          headers:
+            X-NetBackup-Warning:
+              schema:
+                type: string
+              description: This API is no longer used to control access to NetBackup.
+          description: Successful response.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/rolesResource"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    post:
+      deprecated: true
+      description: |
+        **This API has been removed.**
+
+        This API is no longer used to control access to NetBackup.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.
+      tags:
+        - Roles
+      parameters:
+        - $ref: ./common.yaml#/components/headers/auditReasonHeader
+      requestBody:
+        description: The role resource to create.
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/roleResource"
+        required: true
+      responses:
+        "410":
+          $ref: ./common.yaml#/components/responses/errorGone
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  "/rbac/roles/{roleId}":
+    get:
+      deprecated: true
+      description: |
+        Gets the role object for the specified role ID.
+
+        This API returns RBAC configuration data that is no longer used to control access to NetBackup.\
+        This data has been retained to aid in configuring access control using the updated interfaces.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.\
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|ACCESS-CONTROL|LEGACY|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Roles
+      parameters:
+        - $ref: ./common.yaml#/components/parameters/metaData
+        - name: roleId
+          in: path
+          description: The role resource ID.
+          required: true
+          schema:
+            type: string
+            minimum: 1
+            maximum: 2147483647
+        - name: include
+          description: |
+            Appends the included section in the response payload with details about the relationships that are specified in the include query. The include query is the name of the relationship, which is "permissions".
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - permissions
+      responses:
+        "200":
+          headers:
+            X-NetBackup-Warning:
+              schema:
+                type: string
+              description: This API has been deprecated.
+          description: Successful response.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/roleResource"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    put:
+      deprecated: true
+      description: |
+        **This API has been removed.**
+
+        This API is no longer used to control access to NetBackup.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.
+      tags:
+        - Roles
+      parameters:
+        - $ref: ./common.yaml#/components/headers/auditReasonHeader
+        - name: roleId
+          in: path
+          description: The ID of the role to be updated.
+          required: true
+          schema:
+            type: string
+            minimum: 1
+            maximum: 2147483647
+      requestBody:
+        description: The role resource to update.
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/roleResource"
+        required: true
+      responses:
+        "410":
+          $ref: ./common.yaml#/components/responses/errorGone
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    delete:
+      deprecated: true
+      description: |
+        **This API has been removed.**
+
+        This API is no longer used to control access to NetBackup.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.
+      tags:
+        - Roles
+      parameters:
+        - $ref: ./common.yaml#/components/headers/auditReasonHeader
+        - name: roleId
+          in: path
+          description: The ID of the role to delete.
+          required: true
+          schema:
+            type: string
+            minimum: 1
+            maximum: 2147483647
+      responses:
+        "410":
+          $ref: ./common.yaml#/components/responses/errorGone
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  /rbac/permissions:
+    get:
+      deprecated: true
+      description: |
+        Gets all permission objects.
+
+        This API returns RBAC configuration data that is no longer used to control access to NetBackup.\
+        This data has been retained to aid in configuring access control using the updated interfaces.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.\
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|ACCESS-CONTROL|LEGACY|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Permissions
+      parameters:
+        - $ref: ./common.yaml#/components/parameters/metaData
+      responses:
+        "200":
+          headers:
+            X-NetBackup-Warning:
+              schema:
+                type: string
+              description: This API has been deprecated.
+          description: Successful response.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/permissionsResource"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  "/rbac/permissions/{permissionId}":
+    get:
+      deprecated: true
+      description: |
+        Gets the permission object for a given resource ID.
+
+        This API returns RBAC configuration data that is no longer used to control access to NetBackup.\
+        This data has been retained to aid in configuring access control using the updated interfaces.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.\
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|ACCESS-CONTROL|LEGACY|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Permissions
+      parameters:
+        - $ref: ./common.yaml#/components/parameters/metaData
+        - name: permissionId
+          in: path
+          description: The ID of the permission resource to fetch.
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 2147483647
+      responses:
+        "200":
+          headers:
+            X-NetBackup-Warning:
+              schema:
+                type: string
+              description: This API has been deprecated.
+          description: Successful response.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/permissionResource"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  /rbac/access-rules:
+    get:
+      deprecated: true
+      description: |
+        Gets a list of configured access rules.
+
+        This API returns RBAC configuration data that is no longer used to control access to NetBackup.\
+        This data has been retained to aid in configuring access control using the updated interfaces.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.\
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|ACCESS-CONTROL|LEGACY|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Access Rules
+      parameters:
+        - $ref: ./common.yaml#/components/parameters/metaData
+        - name: include
+          description: |
+            Appends the included section in the response payload with details about the relationships that are specified in the include query. The include query is a comma-separated list of relationships that can include role, objectGroup, userPrincipal, or groupPrincipal.
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - role
+              - objectGroup
+              - userPrincipal
+              - groupPrincipal
+      responses:
+        "200":
+          headers:
+            X-NetBackup-Warning:
+              schema:
+                type: string
+              description: This API has been deprecated.
+          description: Successful response.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/accessRulesResource"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    post:
+      deprecated: true
+      description: |
+        **This API has been removed.**
+
+        This API is no longer used to control access to NetBackup.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.
+      tags:
+        - Access Rules
+      parameters:
+        - $ref: ./common.yaml#/components/headers/auditReasonHeader
+      requestBody:
+        description: The access rule resource to create.
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/accessRuleResource"
+        required: true
+      responses:
+        "410":
+          $ref: ./common.yaml#/components/responses/errorGone
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  "/rbac/access-rules/{ruleId}":
+    get:
+      deprecated: true
+      description: |
+        Gets a specific access rule by ID.
+
+        This API returns RBAC configuration data that is no longer used to control access to NetBackup.\
+        This data has been retained to aid in configuring access control using the updated interfaces.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.\
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|ACCESS-CONTROL|LEGACY|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Access Rules
+      parameters:
+        - name: ruleId
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: ./common.yaml#/components/parameters/metaData
+        - name: include
+          description: |
+            Appends the included section in the response payload with details about the relationships that are specified in the include query. The include query is a comma-separated list of relationships that can include role, objectGroup, userPrincipal, or groupPrincipal.
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - role
+              - objectGroup
+              - userPrincipal
+              - groupPrincipal
+      responses:
+        "200":
+          headers:
+            X-NetBackup-Warning:
+              schema:
+                type: string
+              description: This API has been deprecated.
+          description: Successful response.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/accessRuleResource"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    put:
+      deprecated: true
+      description: |
+        **This API has been removed.**
+
+        This API is no longer used to control access to NetBackup.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.
+      tags:
+        - Access Rules
+      parameters:
+        - $ref: ./common.yaml#/components/headers/auditReasonHeader
+        - name: ruleId
+          in: path
+          description: The ID of the access rule to update.
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 2147483647
+      requestBody:
+        description: The role resource to update.
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/accessRuleResource"
+        required: true
+      responses:
+        "410":
+          $ref: ./common.yaml#/components/responses/errorGone
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    delete:
+      deprecated: true
+      description: |
+        **This API has been removed.**
+
+        This API is no longer used to control access to NetBackup.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.
+      tags:
+        - Access Rules
+      parameters:
+        - $ref: ./common.yaml#/components/headers/auditReasonHeader
+        - name: ruleId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "410":
+          $ref: ./common.yaml#/components/responses/errorGone
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  /rbac/object-types:
+    get:
+      deprecated: true
+      description: |
+        Returns the list of all valid RBAC object types.
+
+        This API returns RBAC configuration data that is no longer used to control access to NetBackup.\
+        This data has been retained to aid in configuring access control using the updated interfaces.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.\
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|ACCESS-CONTROL|LEGACY|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Object Types
+      responses:
+        "200":
+          headers:
+            X-NetBackup-Warning:
+              schema:
+                type: string
+              description: This API has been deprecated.
+          description: Successfully returned the list of all the valid RBAC object types.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/rbacObjectTypesResource"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  /rbac/permission-categories:
+    get:
+      deprecated: true
+      description: |
+        Returns a list of permission category resources.
+
+        This API returns RBAC configuration data that is no longer used to control access to NetBackup.\
+        This data has been retained to aid in configuring access control using the updated interfaces.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.\
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|ACCESS-CONTROL|LEGACY|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Permission Categories
+      parameters:
+        - $ref: ./common.yaml#/components/parameters/metaData
+      responses:
+        "200":
+          headers:
+            X-NetBackup-Warning:
+              schema:
+                type: string
+              description: This API has been deprecated.
+          description: Successfully returned the list of permission categories.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/permissionCategoriesResource"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  /rbac/object-groups:
+    get:
+      deprecated: true
+      description: |
+        Lists the object groups.
+
+        This API returns RBAC configuration data that is no longer used to control access to NetBackup.\
+        This data has been retained to aid in configuring access control using the updated interfaces.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.\
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|ACCESS-CONTROL|LEGACY|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Object Groups
+      parameters:
+        - $ref: ./common.yaml#/components/parameters/metaData
+      responses:
+        "200":
+          headers:
+            X-NetBackup-Warning:
+              schema:
+                type: string
+              description: This API has been deprecated.
+          description: Successful response.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/objectGroupsResource"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    post:
+      deprecated: true
+      description: |
+        **This API has been removed.**
+
+        This API is no longer used to control access to NetBackup.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.
+      tags:
+        - Object Groups
+      parameters:
+        - $ref: ./common.yaml#/components/headers/auditReasonHeader
+      requestBody:
+        description: The object group resource to be created.
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/objectGroupResource"
+        required: true
+      responses:
+        "410":
+          $ref: ./common.yaml#/components/responses/errorGone
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+  "/rbac/object-groups/{objectGroupId}":
+    get:
+      deprecated: true
+      description: |
+        Gets the object group by ID.
+
+        This API returns RBAC configuration data that is no longer used to control access to NetBackup.\
+        This data has been retained to aid in configuring access control using the updated interfaces.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.\
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|ACCESS-CONTROL|LEGACY|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Object Groups
+      parameters:
+        - name: objectGroupId
+          in: path
+          description: The ID of the object group to return.
+          required: true
+          schema:
+            type: string
+        - $ref: ./common.yaml#/components/parameters/metaData
+      responses:
+        "200":
+          headers:
+            X-NetBackup-Warning:
+              schema:
+                type: string
+              description: This API has been deprecated.
+          description: Successful response.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/objectGroupResource"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    put:
+      deprecated: true
+      description: |
+        **This API has been removed.**
+
+        This API is no longer used to control access to NetBackup.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.
+      tags:
+        - Object Groups
+      parameters:
+        - name: objectGroupId
+          in: path
+          description: The ID of the object group to update.
+          required: true
+          schema:
+            type: string
+            minimum: 1
+            maximum: 2147483647
+      requestBody:
+        description: The object group record to update.
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/objectGroupResource"
+        required: true
+      responses:
+        "410":
+          $ref: ./common.yaml#/components/responses/errorGone
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+    delete:
+      deprecated: true
+      description: |
+        **This API has been removed.**
+
+        This API is no longer used to control access to NetBackup.\
+        Active RBAC configuration data is now managed using the `/access-control` API definitions.
+      tags:
+        - Object Groups
+      parameters:
+        - $ref: ./common.yaml#/components/headers/auditReasonHeader
+        - name: objectGroupId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "410":
+          $ref: ./common.yaml#/components/responses/errorGone
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+        "503":
+          $ref: ./common.yaml#/components/responses/errorServerBusy
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Authorization
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    localizedRoleData:
+      description: The localized system-defined role data.
+      type: object
+      properties:
+        name:
+          type: string
+          description: The localized role name.
+        description:
+          type: string
+          description: The localized role description.
+    localizedObjectGroupData:
+      description: The localized system-defined object group data.
+      type: object
+      properties:
+        name:
+          type: string
+          description: The localized object group name.
+        description:
+          type: string
+          description: The localized object group description.
+    localizedAccessRuleData:
+      description: The localized system-defined access rule data.
+      type: object
+      properties:
+        description:
+          type: string
+          description: The localized access rule description.
+    localizedPermissionData:
+      description: The localized system-defined permission data.
+      type: object
+      properties:
+        name:
+          type: string
+          description: The localized permission name.
+    localizedPermissionCategoryData:
+      description: The localized system-defined permission category data.
+      type: object
+      properties:
+        name:
+          type: string
+          description: The localized permission category name.
+    rolesResource:
+      description: The collection of role resources.
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/role"
+        links:
+          type: object
+        meta:
+          type: object
+    roleResource:
+      description: The role resource that defines the permissions.
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/role"
+    role:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        links:
+          type: object
+        meta:
+          type: object
+          properties:
+            messages:
+              description: The localized system-defined role name and description.
+              type: object
+              items:
+                $ref: "#/components/schemas/localizedRoleData"
+        type:
+          type: string
+        id:
+          type: string
+          description: The unique role resource ID.
+        attributes:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              description: The user-defined name for the role. Maximum 256 bytes.
+              type: string
+            description:
+              description: The user-defined description for the role. Maximum 256 bytes.
+              type: string
+            isSystemDefined:
+              description: Indicates if the role is predefined in NetBackup. Predefined roles cannot be modified.
+              type: boolean
+        relationships:
+          type: object
+          required:
+            - permissions
+          properties:
+            permissions:
+              description: The permissions allowed for this role. The type should be permission.
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/resourceIdentifierObject"
+    permissionsResource:
+      description: The collection of permissions.
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/permission"
+        links:
+          type: object
+        meta:
+          type: object
+    permissionResource:
+      description: A system-defined resource that groups the permissions that are needed to perform a NetBackup operation.
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/permission"
+    permission:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        links:
+          type: object
+        meta:
+          type: object
+          properties:
+            messages:
+              description: The localized system-defined permission name
+              type: object
+              items:
+                $ref: "#/components/schemas/localizedPermissionData"
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - permission
+        attributes:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              description: The name of the permission.
+              type: string
+            isSystemDefined:
+              description: |
+                Indicates if the permission is predefined in NetBackup. Predefined permissions cannot be modified.
+              type: boolean
+    accessRulesResource:
+      description: The collection of configured access rules.
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/accessRule"
+        links:
+          type: object
+        meta:
+          type: object
+    accessRuleResource:
+      description: |
+        Defines the users, roles, and object groups that make up an access rule. An access rule is only valid if it contains all three of these elements.
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/accessRule"
+    accessRule:
+      type: object
+      required:
+        - type
+        - relationships
+      properties:
+        links:
+          type: object
+        meta:
+          type: object
+          properties:
+            messages:
+              description: The localized system-defined access rule description.
+              type: object
+              items:
+                $ref: "#/components/schemas/localizedAccessRuleData"
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - access-rule
+        attributes:
+          type: object
+          properties:
+            description:
+              description: The description about the access rule being configured. Maximum 256 bytes.
+              type: string
+            isSystemDefined:
+              description: |
+                Indicates if the access rule is predefined in NetBackup. Predefined access rules cannot be modified.
+              type: boolean
+        relationships:
+          type: object
+          required:
+            - objectGroup
+            - role
+          properties:
+            userPrincipal:
+              description: |
+                The user that is configured for the access rule. Either userPrincipal or groupGrincipal is required. The format should be `<domain name>:<user name>:<domain type>:<user id>`. Use the /rbac/identities API to get the identity details of the user principal to pass with this API. The type should be user-principal.
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "#/components/schemas/resourceIdentifierObject"
+            groupPrincipal:
+              description: |
+                The user group that is configured for the access rule. Either userPrincipal or groupPrincipal is required. The format should be `<domain name>:<group name>:<domain type>:<group id>`. Use the /rbac/identities API to get the identity details of the group principal to pass with this API. The type should be group-principal.
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "#/components/schemas/resourceIdentifierObject"
+            objectGroup:
+              description: |
+                Defines the NetBackup objects that are configured for the access rule. The type should be object-group.
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "#/components/schemas/resourceIdentifierObject"
+            role:
+              description: Defines the roles that are configured for the access rule.
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  $ref: "#/components/schemas/resourceIdentifierObject"
+    rbacObjectTypesResource:
+      description: The collection of valid RBAC object types.
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/objectType"
+        links:
+          type: object
+        meta:
+          type: object
+    objectType:
+      type: object
+      required:
+        - type
+      properties:
+        links:
+          type: object
+        meta:
+          type: object
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - object-type
+        attributes:
+          type: object
+          required:
+            - filterableAttributes
+          properties:
+            filterableAttributes:
+              type: array
+              items:
+                $ref: "#/components/schemas/validAttributeObject"
+    validAttributeObject:
+      description: A resource identifier object that represents an individual attribute.
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+    objectGroupsResource:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/objectGroup"
+        links:
+          type: object
+        meta:
+          type: object
+    objectGroupResource:
+      description: Defines the dynamic list of NetBackup objects for the access rule.
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/objectGroup"
+    objectGroup:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        links:
+          type: object
+        meta:
+          type: object
+          properties:
+            messages:
+              description: The localized system-defined object group name and description.
+              type: object
+              items:
+                $ref: "#/components/schemas/localizedObjectGroupData"
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - object-group
+        attributes:
+          type: object
+          required:
+            - name
+            - criteria
+          properties:
+            name:
+              description: A user-defined name for the object group. Maximum 256 bytes.
+              type: string
+            description:
+              description: A user-defined description for the object group. Maximum 256 bytes.
+              type: string
+            isSystemDefined:
+              description: |
+                Indicates if the object group is predefined in NetBackup. Predefined object groups cannot be modified.
+              type: boolean
+            criteria:
+              description: The rules for filtering NetBackup objects, in OData format.
+              type: array
+              items:
+                $ref: "#/components/schemas/collectionCriteria"
+    collectionCriteria:
+      description: |
+        The filtering rules that create the dynamic list of objects in the object group. Use the API GET /object-types to get the valid objectType and valid attributes that you can use for objectCriterion.
+      type: object
+      required:
+        - objectType
+        - objectCriterion
+      properties:
+        criterionId:
+          type: integer
+        objectType:
+          type: string
+        objectCriterion:
+          type: string
+          description: |
+            The filtering rules that create the dynamic list of objects in the object group. The rules should be based on OData standards. Maximum 4096 bytes.
+        isSystemDefined:
+          description: |
+            Indicates if the collection criteria is predefined in NetBackup. Predefined collection criteria cannot be modified.
+          type: boolean
+    permissionCategoriesResource:
+      description: The list of permission category resources.
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/permissionCategory"
+        links:
+          type: object
+        meta:
+          type: object
+    permissionCategory:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        links:
+          type: object
+        meta:
+          type: object
+          properties:
+            messages:
+              description: The localized system-defined permission category name
+              type: object
+              items:
+                $ref: "#/components/schemas/localizedPermissionCategoryData"
+        type:
+          type: string
+        id:
+          type: string
+          description: The unique permission category resource ID.
+        attributes:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              description: The NetBackup-defined name for the permission category.
+              type: string
+            description:
+              description: The description of the permission category.
+              type: string
+            isSystemDefined:
+              description: |
+                Indicates if the permission category is predefined in NetBackup. Predefined permission category cannot be modified.
+              type: boolean
+        relationships:
+          type: object
+          required:
+            - permissions
+          properties:
+            permissions:
+              description: The permissions included in this permission category.
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/resourceIdentifierObject"
+    resourceIdentifierObject:
+      description: A resource identifier object representing an individual resource.
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - role
+            - object-group
+            - user-principal
+            - group-principal
+            - access-rule
+            - permission
+        meta:
+          type: object
+security:
+  - apiKeyAuth: []
+  - cookieAuth: []
+  - jwtAuth: []

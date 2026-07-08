@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  title: NetBackup Self Service API
+  version: "11.0"
+  description: |
+    The NetBackup Self Service API provides access to NSS registered client info.
+externalDocs:
+  description: Getting Started Guide
+  url: http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started/
+servers:
+  - url: '/netbackup'
+    description: NetBackup Master
+paths:
+  /netbackup-self-service/clients:
+    post:
+      description: |
+        Save NSS Client Details.
+
+        **Access Control**\
+        Enforcement Type: [API Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|HOSTS|NSS|`\
+        Requires Operation: `|OPERATIONS|UPDATE|`
+      tags:
+        - NSS Clients
+      security:
+        - apiKeyAuth: []
+        - jwtAuth: []
+      requestBody:
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/NssClientInfo"
+        description: NSS Client Information in JSON format.
+      responses:
+        "204":
+          description: Successfully saved NSS clients details
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "415":
+          $ref: ./common.yaml#/components/responses/errorUnsupportedMediaType
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Authorization
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    NssClientInfo:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - nssClientInfo
+              attributes:
+                type: object
+                properties:
+                  clientName:
+                    type: string
+                  serviceProvider:
+                    type: string
+                required:
+                  - clientName
+security:
+  - apiKeyAuth: []
+  - cookieAuth: []
+  - jwtAuth: []

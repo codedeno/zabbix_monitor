@@ -1,0 +1,1532 @@
+openapi: 3.0.0
+info:
+  version: "11.0"
+  title: NetBackup Service Catalog API
+externalDocs:
+  description: Getting Started Guide
+  url: http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started/
+servers:
+  - url: '/netbackup'
+    description: NetBackup Master
+paths:
+  /servicecatalog/slos:
+    get:
+      description: |
+        Retrieves the list of SLO definitions based on specified filters. If no filters are specified, information for
+        ten SLO definitions is retrieved, sorted in descending order by the name.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for specific object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Service Level Objectives
+      parameters:
+        - name: filter
+          description: |
+            Filter criteria syntax is based on OData standards. Filtering is supported on the following attributes:
+            |Name|Supported Operators|Description|Schema|
+            |---|---|---|---|
+            |id|eq ne gt ge lt le and or not () contains endswith startswith|Specifies the SLO ID.|string|
+            |name|eq ne gt ge lt le and or not () contains endswith startswith|Specifies the SLO name.|string|
+            |description|eq ne gt ge lt le and or not () contains endswith startswith|Specifies the SLO description.|string|
+            |subscriptionCount|eq ne gt ge lt le|Specifies the SLO subscription count.|integer|
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page[offset]
+          description: The subscription record number offset.
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: page[limit]
+          description: The number of records on one page, after the offset.
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: sort
+          description: Sort in ascending order on the specified property. Prefix with '-' for descending order.
+          in: query
+          required: false
+          schema:
+            type: string
+            default: -name
+      responses:
+        "200":
+          description: Successfully retrieved a list of existing SLOs.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/sloResponseArray"
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    post:
+      description: |
+        Creates a new SLO definition.
+
+        **Access Control**\
+        Enforcement Type: Object-Level\
+        Namespace: `|PROTECTION|PROTECTION_PLAN|`\
+        Requires Operation: `|OPERATIONS|ADD|`
+      tags:
+        - Service Level Objectives
+      requestBody:
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/postSloRequest"
+        required: true
+      responses:
+        "201":
+          description: Successfully created the SLO definition.
+          headers:
+            Location:
+              description: A link to the SLO definition.
+              schema:
+                type: string
+                format: url
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/sloResponse"
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "409":
+          description: An SLO with the same name already exists.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  "/servicecatalog/slos/{sloID}":
+    parameters:
+      - $ref: "#/components/parameters/sloID"
+    put:
+      description: |
+        Updates the existing SLO definition.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for specific object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `|OPERATIONS|UPDATE|`
+      tags:
+        - Service Level Objectives
+      requestBody:
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/putSloRequest"
+        description: The updated SLO definition.
+        required: true
+      responses:
+        "204":
+          description: Successfully updated the SLO definition.
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: The SLO definition was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "409":
+          description: The SLO currently protects an asset or a SLO with the same name already exists.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    get:
+      description: |
+        Gets the specified SLO definition.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for specific object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Service Level Objectives
+      responses:
+        "200":
+          description: Successfully retrieved the specified SLO definition.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/sloResponse"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: The SLO definition was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    delete:
+      description: |
+        Deletes the existing SLO definition.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for specific object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `|OPERATIONS|DELETE|`
+      tags:
+        - Service Level Objectives
+      responses:
+        "204":
+          description: Successfully removed the existing SLO.
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: The SLO definition was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "409":
+          description: The SLO currently protects an asset.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    patch:
+      description: |
+        Updates some of the attributes of the SLO definition for the existing SLO.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for specific object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `|OPERATIONS|UPDATE|`
+      tags:
+        - Service Level Objectives
+      requestBody:
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/patchSloRequest"
+        description: The updated SLO definition.
+        required: true
+      responses:
+        "200":
+          description: Successfully updated the SLO definition.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/sloResponse"
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: The SLO definition was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "409":
+          description: A SLO with the same name already exists.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  "/servicecatalog/slos/{sloID}/backup-now":
+    parameters:
+      - $ref: "#/components/parameters/sloID"
+    post:
+      description: |
+        Initiate a manual backup of an asset or asset group using the configuration from the protection plan identified
+        by the given 'sloID'.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for protection plan's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|SUBSCRIBE|`
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for asset's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `<workload asset base namespace>|PROTECT|` where `<workload asset base namespace>` can be one of the following:\
+        `|OPERATIONS|ASSETS|CLOUD|`\
+        `|OPERATIONS|ASSETS|RHV|`\
+        `|OPERATIONS|ASSETS|AHV|`\
+        `|OPERATIONS|ASSETS|VMWARE|`\
+        `|OPERATIONS|MSSQL|`\
+        `|OPERATIONS|ASSETS|KUBERNETES|`\
+        `|OPERATIONS|ASSETS|CASSANDRA|`\
+        `|OPERATIONS|ASSETS|POSTGRESQL|`\
+        `|OPERATIONS|ASSETS|MYSQL|`\
+        `|OPERATIONS|ASSETS|OPENSTACK|`
+      tags:
+        - Service Level Objectives
+      requestBody:
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/backupNowRequest"
+        description: The required details for the Backup Now request.
+        required: true
+      responses:
+        "202":
+          description: Successfully started the manual backup job.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/backupNowResponse"
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: No protection plan matches the given 'sloID'.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "409":
+          description: The asset or the asset group does not have the same workload type as the SLO.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "415":
+          $ref: ./common.yaml#/components/responses/errorUnsupportedMediaType
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  "/servicecatalog/slos/{sloID}/subscriptions":
+    parameters:
+      - $ref: "#/components/parameters/sloID"
+    post:
+      description: |
+        Creates a subscription for the specified SLO.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+
+        This request requires access control operations related to the protection plan and asset being subscribed.  If protection plan details need\
+        to be customized/deviated from the base plan, additional delegation specific operations are also required.
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for protection plan's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|SUBSCRIBE|`
+
+        AND (at least one or more of the following operations if schedule or policy attribute(s) are being customized) \
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|DELEGATE_POLICY_ATTRIBUTES|`\
+        OR\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|DELEGATE_SCHEDULE_FULL_INCR_ATTRIBUTES|`\
+        OR\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|DELEGATE_SCHEDULE_TLOG_ATTRIBUTES|`
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for asset's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `<workload asset base namespace>|PROTECT|` where `<workload asset base namespace>` can be one of the following:\
+        `|OPERATIONS|ASSETS|CLOUD|`\
+        `|OPERATIONS|ASSETS|RHV|`\
+        `|OPERATIONS|ASSETS|AHV|`\
+        `|OPERATIONS|ASSETS|VMWARE|`\
+        `|OPERATIONS|MSSQL|`\
+        `|OPERATIONS|ASSETS|KUBERNETES|`\
+        `|OPERATIONS|ASSETS|CASSANDRA|`\
+        `|OPERATIONS|ASSETS|POSTGRESQL|`\
+        `|OPERATIONS|ASSETS|MYSQL|`\
+        `|OPERATIONS|ASSETS|OPENSTACK|`
+      tags:
+        - Service Level Objectives
+      requestBody:
+        $ref: "#/components/requestBodies/postSubscriptionRequest"
+      responses:
+        "201":
+          description: Successfully created the subscription.
+          headers:
+            Location:
+              description: A link to the subscription.
+              schema:
+                type: string
+                format: url
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/subscriptionResponse"
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: Specified SLO was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "409":
+          description: The asset or the asset group does not have the same workload type as the SLO or the subscription already exists.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  "/servicecatalog/slos/{sloID}/subscriptions/{subscriptionID}":
+    parameters:
+      - $ref: "#/components/parameters/sloID"
+      - $ref: "#/components/parameters/subscriptionID"
+    get:
+      description: |
+        Retrieves an existing subscription.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+
+        This request requires access control operations related to the protection plan and subscribed asset.
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for protection plan's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|SUBSCRIBE|`
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for asset's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `<workload asset base namespace>|PROTECT|` where `<workload asset base namespace>` can be one of the following:\
+        `|OPERATIONS|ASSETS|CLOUD|`\
+        `|OPERATIONS|ASSETS|RHV|`\
+        `|OPERATIONS|ASSETS|AHV|`\
+        `|OPERATIONS|ASSETS|VMWARE|`\
+        `|OPERATIONS|MSSQL|`\
+        `|OPERATIONS|ASSETS|KUBERNETES|`\
+        `|OPERATIONS|ASSETS|CASSANDRA|`\
+        `|OPERATIONS|ASSETS|POSTGRESQL|`\
+        `|OPERATIONS|ASSETS|MYSQL|`\
+        `|OPERATIONS|ASSETS|OPENSTACK|`        
+      tags:
+        - Service Level Objectives
+      responses:
+        "200":
+          description: Successfully retrieved the subscription.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/subscriptionResponse"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: The subscription was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    put:
+      description: |
+        Updates a subscription for the specified SLO.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+
+        This request requires access control operations related to the protection plan and subscribed asset.  If protection plan details need\
+        to be customized/deviated from the base plan, additional delegation specific operations are also required.
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for protection plan's object-level namespace.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|SUBSCRIBE|`
+
+        AND (at least one or more of the following operations if schedule or policy attribute(s) are being customized) \
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|DELEGATE_POLICY_ATTRIBUTES|`\
+        OR\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|DELEGATE_SCHEDULE_FULL_INCR_ATTRIBUTES|`\
+        OR\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|DELEGATE_SCHEDULE_TLOG_ATTRIBUTES|`
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for asset's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `<workload asset base namespace>|PROTECT|` where `<workload asset base namespace>` can be one of the following:\
+        `|OPERATIONS|ASSETS|CLOUD|`\
+        `|OPERATIONS|ASSETS|RHV|`\
+        `|OPERATIONS|ASSETS|AHV|`\
+        `|OPERATIONS|ASSETS|VMWARE|`\
+        `|OPERATIONS|MSSQL|`\
+        `|OPERATIONS|ASSETS|KUBERNETES|`\
+        `|OPERATIONS|ASSETS|CASSANDRA|`\
+        `|OPERATIONS|ASSETS|POSTGRESQL|`\
+        `|OPERATIONS|ASSETS|MYSQL|`\
+        `|OPERATIONS|ASSETS|OPENSTACK|`
+      tags:
+        - Service Level Objectives
+      requestBody:
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/putSubscriptionRequest"
+        required: true
+      responses:
+        "204":
+          description: Successfully updated the subscription.
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: Specified SLO or subscription was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    delete:
+      description: |
+        Deletes the subscription.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+
+        This request requires access control operations related to the protection plan and subscribed asset.
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for protection plan's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|SUBSCRIBE|`
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for asset's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `<workload asset base namespace>|PROTECT|` where `<workload asset base namespace>` can be one of the following:\
+        `|OPERATIONS|ASSETS|CLOUD|`\
+        `|OPERATIONS|ASSETS|RHV|`\
+        `|OPERATIONS|ASSETS|AHV|`\
+        `|OPERATIONS|ASSETS|VMWARE|`\
+        `|OPERATIONS|MSSQL|`\
+        `|OPERATIONS|ASSETS|KUBERNETES|`\
+        `|OPERATIONS|ASSETS|CASSANDRA|`\
+        `|OPERATIONS|ASSETS|POSTGRESQL|`\
+        `|OPERATIONS|ASSETS|MYSQL|`\
+        `|OPERATIONS|ASSETS|OPENSTACK|`
+      tags:
+        - Service Level Objectives
+      responses:
+        "204":
+          description: Successfully removed the specified subscription.
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: The specified subscription was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  "/servicecatalog/slos/{sloID}/subscriptions/{subscriptionID}/copy":
+    parameters:
+      - $ref: "#/components/parameters/sloID"
+      - $ref: "#/components/parameters/subscriptionID"
+    post:
+      description: |
+        Protect asset or asset group like the subscription that was specified.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+
+        This request requires access control operations related to the protection plan, asset with an existing subscription (asset1), and asset to be subscribed (asset2).
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for protection plan's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|SUBSCRIBE|`
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for asset1's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `<workload asset base namespace>|PROTECT|` where `<workload asset base namespace>` can be one of the following:\
+        `|OPERATIONS|ASSETS|CLOUD|`\
+        `|OPERATIONS|ASSETS|RHV|`\
+        `|OPERATIONS|ASSETS|AHV|`\
+        `|OPERATIONS|ASSETS|VMWARE|`\
+        `|OPERATIONS|MSSQL|`\
+        `|OPERATIONS|ASSETS|KUBERNETES|`\
+        `|OPERATIONS|ASSETS|CASSANDRA|`\
+        `|OPERATIONS|ASSETS|POSTGRESQL|`
+        `|OPERATIONS|ASSETS|MYSQL|`
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for asset2's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `<workload asset base namespace>|PROTECT|` where `<workload asset base namespace>` can be one of the following:\
+        `|OPERATIONS|ASSETS|CLOUD|`\
+        `|OPERATIONS|ASSETS|RHV|`\
+        `|OPERATIONS|ASSETS|AHV|`\
+        `|OPERATIONS|ASSETS|VMWARE|`\
+        `|OPERATIONS|MSSQL|`\
+        `|OPERATIONS|ASSETS|KUBERNETES|`\
+        `|OPERATIONS|ASSETS|CASSANDRA|`\
+        `|OPERATIONS|ASSETS|POSTGRESQL|`
+        `|OPERATIONS|ASSETS|MYSQL|`
+      tags:
+        - Service Level Objectives
+      requestBody:
+        $ref: "#/components/requestBodies/copySubscriptionRequest"
+      responses:
+        "201":
+          description: Successfully protected asset or asset group like the subscription that was specified.
+          headers:
+            Location:
+              description: A link to the subscription.
+              schema:
+                type: string
+                format: url
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/subscriptionResponse"
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: The specified SLO ID, subscription ID, asset, or asset group was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "409":
+          description: The asset or the asset group does not have the same workload type as the SLO or the subscription already exists.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  "/servicecatalog/slos/{sloID}/subscriptions/{subscriptionID}/reset":
+    parameters:
+      - $ref: "#/components/parameters/sloID"
+      - $ref: "#/components/parameters/subscriptionID"
+    put:
+      description: |
+        Reset all the asset or the asset group protection attributes back to the protection plan defaults.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+
+        This request requires the access control operations that relate to the protection plan and the asset for an existing subscription.
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for protection plan's object-level namespaces.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `|OPERATIONS|PROTECTION|PROTECTION_PLAN|SUBSCRIBE|`
+
+        Namespace: `|ASSETS|<workload type>|` where `<workload type>` can be one of CLOUD, RHV, AHV, VMWARE, MSSQL, etc.\
+        Requires Operation: `|OPERATIONS|ASSETS|WORKLOAD_ACCESS|`
+
+        Namespace: Reference the `data.meta.accessControlId` metadata response attribute for the asset's object-level namespace.\
+        Requires Operation: `|OPERATIONS|VIEW|`\
+        Requires Operation: `<workload asset base namespace>|PROTECT|` where `<workload asset base namespace>` can be one of the following:\
+        `|OPERATIONS|ASSETS|CLOUD|`\
+        `|OPERATIONS|ASSETS|RHV|`\
+        `|OPERATIONS|ASSETS|AHV|`\
+        `|OPERATIONS|ASSETS|VMWARE|`\
+        `|OPERATIONS|MSSQL|`\
+        `|OPERATIONS|ASSETS|KUBERNETES|`\
+        `|OPERATIONS|ASSETS|CASSANDRA|`\
+        `|OPERATIONS|ASSETS|POSTGRESQL|`
+        `|OPERATIONS|ASSETS|MYSQL|`
+      tags:
+        - Service Level Objectives
+      responses:
+        "204":
+          description: Successfully reset the subscription protection back to the protection plan defaults.
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          description: The specified SLO ID or subscription ID was not found.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  /servicecatalog/slo-from-policy:
+    post:
+      description: |
+        Converts an existing NetBackup policy to a protection plan.
+
+        **Access Control**\
+        Enforcement Type: [Object-Level]\
+        Namespace: `|PROTECTION|PROTECTION_PLAN|`\
+        Requires Operation: `|OPERATIONS|ADD|`
+      tags:
+        - Service Level Objectives
+      requestBody:
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/sloFromPolicyRequest"
+        required: true
+      responses:
+        "201":
+          description: Successfully created the protection plan from existing NetBackup policy.
+          headers:
+            Location:
+              description: A link to the SLO definition.
+              schema:
+                type: string
+                format: url
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/sloResponse"
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "409":
+          description: A SLO with the same name already exists.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: Authorization
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    sloID:
+      name: sloID
+      in: path
+      description: The unique ID for the SLO definition.
+      required: true
+      schema:
+        type: string
+    subscriptionID:
+      name: subscriptionID
+      in: path
+      description: A unique ID for the subscription.
+      required: true
+      schema:
+        type: string
+  requestBodies:
+    postSubscriptionRequest:
+      content:
+        application/vnd.netbackup+json;version=11.0:
+          schema:
+            $ref: "#/components/schemas/postSubscriptionRequest"
+      required: true
+    copySubscriptionRequest:
+      content:
+        application/vnd.netbackup+json;version=11.0:
+          schema:
+            $ref: "#/components/schemas/copySubscriptionRequest"
+      required: true
+  schemas:
+    sloResponseArray:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/sloResponseData"
+    sloResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/sloResponseData"
+    sloResponseData:
+      type: object
+      required:
+        - links
+        - id
+        - type
+        - attributes
+      properties:
+        links:
+          type: object
+          properties:
+            self:
+              $ref: "#/components/schemas/linkObject"
+        id:
+          type: string
+          description: A unique identifier for the SLO definition, such as a GUID.
+        type:
+          $ref: "#/components/schemas/sloIdentifierV3"
+        attributes:
+          $ref: "#/components/schemas/sloAttributes"
+        relationships:
+          $ref: "#/components/schemas/sloRelationships"
+    sloRelationships:
+      type: object
+      properties:
+        policy:
+          description: A NetBackup policy template that is created for this SLO.
+          type: object
+          properties:
+            links:
+              type: object
+              properties:
+                related:
+                  $ref: "#/components/schemas/linkObject"
+            data:
+              $ref: "#/components/schemas/resourceIdentifierObject"
+    putSloRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/putSloRequestData"
+    putSloRequestData:
+      type: object
+      required:
+        - type
+        - id
+        - attributes
+      properties:
+        type:
+          $ref: "#/components/schemas/sloIdentifierV3"
+        id:
+          type: string
+          description: A unique identifier for the SLO definition, such as a GUID.
+        attributes:
+          $ref: "#/components/schemas/postSloAttributes"
+    postSloRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/postSloRequestData"
+    postSloRequestData:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        type:
+          $ref: "#/components/schemas/sloIdentifierV3"
+        attributes:
+          $ref: "#/components/schemas/postSloAttributes"
+    patchSloRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/patchSloRequestData"
+    patchSloRequestData:
+      type: object
+      required:
+        - type
+        - id
+        - attributes
+      properties:
+        type:
+          $ref: "#/components/schemas/sloIdentifierV3"
+        id:
+          type: string
+          description: A unique identifier for the SLO definition, such as a GUID.
+        attributes:
+          $ref: "#/components/schemas/patchSloAttributes"
+    patchSloAttributes:
+      type: object
+      properties:
+        description:
+          type: string
+        schedules:
+          type: array
+          items:
+            $ref: "#/components/schemas/patchSchedule"
+    patchSchedule:
+      type: object
+      required:
+        - scheduleName
+      properties:
+        scheduleName:
+          type: string
+          description: Name of an existing policy schedule to patch.
+        replication:
+          type: object
+          required:
+            - replicationTarget
+          properties:
+            replicationTarget:
+              $ref: "#/components/schemas/replicationTarget"
+        duplication:
+          type: object
+          required:
+            - storageUnit
+          properties:
+            storageUnit:
+              type: string
+        cloudSnapshotReplication:
+          type: array
+          items:
+            type: object
+            required:
+              - cloudSnapshotReplicationTarget
+            properties:
+              cloudSnapshotReplicationTarget:
+                type: string
+        backupFromSnapshot:
+          type: object
+          required:
+            - backupStorage
+          properties:
+            backupStorage:
+              type: string
+        backupStorageUnit:
+          type: string
+    postSloAttributes:
+      required:
+        - name
+        - workloadType
+        - schedules
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        policyNamePrefix:
+          $ref: "#/components/schemas/policyNamePrefix"
+        workloadType:
+          $ref: "#/components/schemas/workloadType"
+        schedules:
+          type: array
+          items:
+            $ref: "#/components/schemas/schedule"
+        policyDefinition:
+          $ref: config_policies.yaml#/components/schemas/policyAttributes
+    sloAttributes:
+      required:
+        - name
+        - policyNamePrefix
+        - workloadType
+        - capabilities
+        - schedules
+        - subscriptionCount
+        - subscribeAllowed
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        policyNamePrefix:
+          $ref: "#/components/schemas/policyNamePrefix"
+        workloadType:
+          $ref: "#/components/schemas/workloadType"
+        subscribeAllowed:
+          $ref: "#/components/schemas/subscribeAllowed"
+        subscriptionCount:
+          $ref: "#/components/schemas/subscriptionCount"
+        schedules:
+          type: array
+          items:
+            $ref: "#/components/schemas/scheduleForExistingPolicy"
+        capabilities:
+          $ref: "#/components/schemas/capabilities"
+        policyDefinition:
+          $ref: config_policies.yaml#/components/schemas/policyAttributes
+    subscriptionCount:
+      type: integer
+      description: The number of subscriptions that is associated with the SLO.
+    subscribeAllowed:
+      type: boolean
+      description: Indicates whether the user is allowed to subscribe assets to the SLO.
+    capabilities:
+      type: array
+      items:
+        type: string
+    workloadType:
+      type: string
+      enum:
+        - CLOUD
+        - VMWARE
+        - RHV
+        - AHV
+        - SQL_SERVER
+        - KUBERNETES
+        - CASSANDRA
+        - POSTGRESQL
+        - MYSQL
+        - OPENSTACK
+    scheduleForExistingPolicy:
+      type: object
+      required:
+        - scheduleName
+        - retention
+        - backupWindows
+      properties:
+        scheduleType:
+          $ref: "#/components/schemas/scheduleType"
+        scheduleName:
+          type: string
+          description: The name of the generated policy schedule.
+        frequencySeconds:
+          $ref: config_policies.yaml#/components/schemas/frequencySeconds
+        excludeDates:
+          $ref: config_policies.yaml#/components/schemas/excludeDates
+        includeDates:
+          $ref: config_policies.yaml#/components/schemas/includeDates
+        retention:
+          $ref: "#/components/schemas/retention"
+        retentionType:
+          type: string
+          description: Indicates how to manage the retention of this copy.
+          enum:
+            - FIXED
+            - EXPIRE_AFTER_COPY
+        backupWindows:
+          $ref: "#/components/schemas/backupWindows"
+        replication:
+          $ref: "#/components/schemas/replication"
+        duplication:
+          $ref: "#/components/schemas/duplication"
+        cloudSnapshotReplication:
+          type: array
+          items:
+            $ref: "#/components/schemas/cloudSnapshotReplication"
+        cloudSnapshotIndex:
+          $ref: "#/components/schemas/cloudSnapshotIndex"
+        backupFromSnapshot:
+          $ref: "#/components/schemas/backupFromSnapshot"
+        backupStorageUnit:
+          type: string
+    schedule:
+      type: object
+      required:
+        - retention
+      properties:
+        scheduleType:
+          $ref: "#/components/schemas/scheduleType"
+        frequencySeconds:
+          $ref: config_policies.yaml#/components/schemas/frequencySeconds
+        excludeDates:
+          $ref: config_policies.yaml#/components/schemas/excludeDates
+        includeDates:
+          $ref: config_policies.yaml#/components/schemas/includeDates
+        retention:
+          $ref: "#/components/schemas/retention"
+        retentionType:
+          type: string
+          description: Indicates how to manage the retention of this copy.
+          enum:
+            - FIXED
+            - EXPIRE_AFTER_COPY
+        backupWindows:
+          $ref: "#/components/schemas/backupWindows"
+        replication:
+          $ref: "#/components/schemas/replication"
+        duplication:
+          $ref: "#/components/schemas/duplication"
+        cloudSnapshotReplication:
+          type: array
+          items:
+            $ref: "#/components/schemas/cloudSnapshotReplication"
+        cloudSnapshotIndex:
+          $ref: "#/components/schemas/cloudSnapshotIndex"
+        backupFromSnapshot:
+          $ref: "#/components/schemas/backupFromSnapshot"
+        backupStorageUnit:
+          type: string
+    scheduleType:
+      type: string
+      enum:
+        - FULL
+        - DIFFERENTIAL_INCREMENTAL
+        - CUMULATIVE_INCREMENTAL
+        - TRANSACTION_LOG
+    backupWindows:
+      type: array
+      description: The window during which the backup is allowed to start. Each day of the week is defined independently. However for Openstack workload, it is optional.
+      minItems: 0
+      maxItems: 7
+      items:
+        type: object
+        properties:
+          dayOfWeek:
+            type: integer
+            description: |
+              The day of the week the backup window starts.  Possible values for DAY are 1 (Sunday) through 7 (Saturday).
+          durationSeconds:
+            type: integer
+            description: The duration of the backup window which is expressed in seconds.
+          startSeconds:
+            type: integer
+            description: |
+              The start time of the backup window which is expressed in seconds, elapsed since the beginning of the day.
+        required:
+          - dayOfWeek
+          - durationSeconds
+          - startSeconds
+    replication:
+      type: object
+      required:
+        - retention
+        - replicationTarget
+      properties:
+        retention:
+          $ref: "#/components/schemas/retention"
+        replicationTarget:
+          $ref: "#/components/schemas/replicationTarget"
+    duplication:
+      type: object
+      required:
+        - retention
+        - storageUnit
+      properties:
+        retention:
+          $ref: "#/components/schemas/retention"
+        storageUnit:
+          type: string
+    cloudSnapshotIndex:
+      type: boolean
+      default: false
+      description: Indicates whether cloud snapshot indexing SLP operation should be enabled.
+    backupFromSnapshot:
+      type: object
+      description: Configuration of cloud backup from snapshot storage and retention.
+      required:
+        - backupStorage
+        - retention
+      properties:
+        backupStorage:
+          type: string
+          description: The name of the storage where backup from snapshot image will be stored
+        retention:
+          $ref: "#/components/schemas/retention"
+        retentionType:
+          type: string
+          description: Indicates how to manage the retention of this backup copy.
+          enum:
+            - FIXED
+        deferOperation:
+          type: boolean
+          description: Indicates whether to postpone backup from snapshot operation until the snapshot is about to expire.
+    cloudSnapshotReplication:
+      type: object
+      description: Configuration of cloud snapshot replication target and retention.
+      required:
+        - cloudSnapshotReplicationTarget
+        - retention
+      properties:
+        cloudSnapshotReplicationTarget:
+          type: string
+          description: The name of the cloud storage to replicate the cloud snapshot image to.
+        retention:
+          $ref: "#/components/schemas/retention"
+    policyNamePrefix:
+      type: string
+      description: The prefix for the generated policy that is associated with this protection plan.
+      maxLength: 91
+    retention:
+      type: object
+      required:
+        - value
+        - unit
+      properties:
+        value:
+          type: integer
+        unit:
+          type: string
+          enum:
+            - HOURS
+            - DAYS
+            - WEEKS
+            - MONTHS
+            - YEARS
+    retentionType:
+      type: string
+      description: Indicates how to manage the retention of this copy.
+    replicationTarget:
+      type: object
+      required:
+        - targetMasterServer
+        - targetSlp
+      properties:
+        targetMasterServer:
+          type: string
+        targetSlp:
+          type: string
+    postSubscriptionRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/postSubscriptionRequestData"
+    postSubscriptionRequestData:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        type:
+          type: string
+          description: Specify 'subscription' as the subscription type.
+          enum:
+            - subscription
+        attributes:
+          $ref: "#/components/schemas/postSubscriptionRequestAttributes"
+    copySubscriptionRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/copySubscriptionRequestData"
+    copySubscriptionRequestData:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        type:
+          type: string
+          description: Specify 'subscription' as the subscription type.
+          enum:
+            - subscription
+        attributes:
+          $ref: "#/components/schemas/copySubscriptionRequestAttributes"
+    putSubscriptionRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/putSubscriptionRequestData"
+    putSubscriptionRequestData:
+      type: object
+      required:
+        - type
+        - id
+        - attributes
+      properties:
+        type:
+          type: string
+          enum:
+            - subscription
+        id:
+          type: string
+        attributes:
+          $ref: "#/components/schemas/putSubscriptionRequestAttributes"
+    subscriptionResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/subscriptionResponseData"
+    subscriptionResponseData:
+      type: object
+      required:
+        - links
+        - id
+        - type
+      properties:
+        links:
+          type: object
+          properties:
+            self:
+              $ref: "#/components/schemas/linkObject"
+        id:
+          type: string
+          description: A unique ID for the subscription.
+        type:
+          type: string
+          enum:
+            - subscription
+        attributes:
+          $ref: "#/components/schemas/subscriptionResponseAttributes"
+        relationships:
+          $ref: "#/components/schemas/subscriptionRelationships"
+    subscriptionRelationships:
+      type: object
+      required:
+        - slo
+      properties:
+        slo:
+          description: The SLO associated with this subscription.
+          type: object
+          properties:
+            links:
+              type: object
+              properties:
+                related:
+                  $ref: "#/components/schemas/linkObject"
+            data:
+              $ref: "#/components/schemas/resourceIdentifierObject"
+        policy:
+          description: The NetBackup policy that is created for this subscription.
+          type: object
+          properties:
+            links:
+              type: object
+              properties:
+                related:
+                  $ref: "#/components/schemas/linkObject"
+            data:
+              $ref: "#/components/schemas/resourceIdentifierObject"
+    postSubscriptionRequestAttributes:
+      type: object
+      required:
+        - selectionType
+        - selectionId
+      properties:
+        selectionType:
+          type: string
+          description: The asset selection type.
+          enum:
+            - ASSET
+            - ASSETGROUP
+        selectionId:
+          type: string
+          description: The asset ID or asset group ID.
+        schedules:
+          type: array
+          items:
+            $ref: "#/components/schemas/schedule"
+        policyDefinition:
+          $ref: config_policies.yaml#/components/schemas/policyAttributes
+        isCustomized:
+          type: boolean
+          default: false
+          description: Indicates whether the subscription is customized.
+    copySubscriptionRequestAttributes:
+      type: object
+      required:
+        - selectionType
+        - selectionId
+      properties:
+        selectionType:
+          type: string
+          description: The asset selection type.
+          enum:
+            - ASSET
+            - ASSETGROUP
+        selectionId:
+          type: string
+          description: The asset ID or asset group ID.
+    putSubscriptionRequestAttributes:
+      type: object
+      required:
+        - selectionType
+        - selectionId
+        - schedules
+        - policyDefinition
+      properties:
+        selectionType:
+          type: string
+          description: The asset selection type.
+          enum:
+            - ASSET
+            - ASSETGROUP
+        selectionId:
+          type: string
+          description: The asset ID or asset group ID.
+        schedules:
+          type: array
+          items:
+            $ref: "#/components/schemas/schedule"
+        policyDefinition:
+          $ref: config_policies.yaml#/components/schemas/policyAttributes
+        isCustomized:
+          type: boolean
+          default: false
+          description: Indicates whether the subscription is customized.
+    subscriptionResponseAttributes:
+      type: object
+      required:
+        - selectionType
+        - selectionId
+        - isCustomized
+        - capabilities
+        - schedules
+      properties:
+        selectionType:
+          type: string
+          description: The asset selection type.
+          enum:
+            - ASSET
+            - ASSETGROUP
+        selectionId:
+          type: string
+          description: The asset ID or asset group ID.
+        schedules:
+          type: array
+          items:
+            $ref: "#/components/schemas/scheduleForExistingPolicy"
+        capabilities:
+          $ref: "#/components/schemas/capabilities"
+        policyDefinition:
+          $ref: config_policies.yaml#/components/schemas/policyAttributes
+        isCustomized:
+          type: boolean
+          default: false
+          description: Indicates whether the subscription is customized.
+    sloFromPolicyRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/sloFromPolicyRequestData"
+    sloFromPolicyRequestData:
+      type: object
+      required:
+        - type
+        - attributes
+      properties:
+        type:
+          type: string
+          description: Specify 'sloFromPolicy' as the type.
+          enum:
+            - sloFromPolicy
+        attributes:
+          type: object
+          required:
+            - policyName
+          properties:
+            policyName:
+              type: string
+              maxLength: 91
+    backupNowRequest:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              description: The resource type. Must be set to 'backupNowRequest'.
+              enum:
+                - backupNowRequest
+            attributes:
+              $ref: "#/components/schemas/backupNowRequestAttributes"
+          required:
+            - type
+            - attributes
+      required:
+        - data
+    backupNowRequestAttributes:
+      type: object
+      properties:
+        selectionType:
+          type: string
+          description: The asset selection type.
+          enum:
+            - ASSET
+            - ASSETGROUP
+        selectionId:
+          type: string
+          description: The asset ID or asset group ID.
+        scheduleType:
+          type: string
+          description: The MSSQL asset schedule type from the SLO to run. Attribute not supported for other workloads.
+          enum:
+            - DIFFERENTIAL_INCREMENTAL
+            - FULL
+            - TRANSACTION_LOG
+      required:
+        - selectionType
+        - selectionId
+    backupNowResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./admin.yaml#/components/schemas/getJobDetailsResponse
+      required:
+        - data
+    resourceIdentifierObject:
+      description: A resource identifier object representing an individual resource.
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+    paginationAttributes:
+      type: object
+      properties:
+        count:
+          type: integer
+        pages:
+          type: integer
+        page:
+          type: integer
+        offset:
+          type: integer
+        limit:
+          type: integer
+        first:
+          type: integer
+        last:
+          type: integer
+        next:
+          type: integer
+        prev:
+          type: integer
+    allLinks:
+      type: object
+      properties:
+        self:
+          $ref: "#/components/schemas/linkObject"
+        first:
+          $ref: "#/components/schemas/linkObject"
+        last:
+          $ref: "#/components/schemas/linkObject"
+        next:
+          $ref: "#/components/schemas/linkObject"
+        prev:
+          $ref: "#/components/schemas/linkObject"
+    linkObject:
+      type: object
+      properties:
+        href:
+          type: string
+    sloIdentifierV3:
+      type: string
+      description: Specify 'slov3' as the SLO type.
+      enum:
+        - slov3
+security:
+  - apiKeyAuth: []
+  - cookieAuth: []
+  - jwtAuth: []

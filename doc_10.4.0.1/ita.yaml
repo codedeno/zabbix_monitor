@@ -1,0 +1,407 @@
+openapi: 3.0.0
+info:
+  title: NetBackup IT Analytics API
+  version: "11.0"
+  description: |
+    The NetBackup IT Analytics APIs provide access to On Premise ITA Portal.
+externalDocs:
+  description: Getting Started Guide
+  url: http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started/
+servers:
+  - url: '/netbackup'
+paths:
+  /ita/servers:
+    post:
+      description: |
+        Registers ITA data collector with on Premise ITA Portal.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|ADD|`
+
+        Following permissions are also required.\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|SERVICE-PRINCIPAL|`\
+        Requires Operation: `|OPERATIONS|ADD|`
+      tags:
+        - Veritas IT Analytics
+      requestBody:
+        description: The request body of the server to be created.
+        content:
+          multipart/vnd.netbackup+form-data;version=11.0:
+            schema:
+              type: object
+              required:
+                - itaRegFile
+              properties:
+                itaRegFile:
+                  description: The IT Analytics registration file.
+                  type: string
+                  format: binary
+                proxyEnabled:
+                  type: boolean
+                  description: Specifies that a proxy server is used for communication with the on Prem ITA Server.
+                proxyId:
+                  type: integer
+                  description: Specifies the id of proxy server if used for communication with the on Prem ITA Server.
+        required: true
+      responses:
+        "201":
+          description: |
+            Successfully added the on Premise ITA server.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/postItaServerResponse"
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "409":
+          description: The Veritas IT Analytics Platform is already added.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: ./common.yaml#/components/schemas/errorResponse
+        "415":
+          $ref: ./common.yaml#/components/responses/errorUnsupportedMediaType
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    get:
+      description: |
+        Retrieve the details of on premise IT Analytics server.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Veritas IT Analytics
+      responses:
+        "200":
+          description: |
+            Successfully retrieved the Veritas IT Analytics server details.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/getItaServerResponse"
+        "204":
+          description: |
+            ITA DC is not registered with On Prem ITA portal.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/getEmptyItaServerResponse"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    delete:
+      description: |
+        Delete the details of on premise IT Analytics server.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|DELETE|`
+      tags:
+        - Veritas IT Analytics
+      responses:
+        "204":
+          description: |
+            Successfully deregistered the Veritas IT Analytics server.
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  "/ita/servers/{itaServerId}":
+    patch:
+      description: |
+        Update the proxy configuration of On premise Server.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|UPDATE|`
+      tags:
+        - Veritas IT Analytics
+      parameters:
+        - $ref: "#/components/parameters/itaServerId"
+      requestBody:
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/updateItaServerRequest"
+        description: Specifies the JSON body that contains the updated proxy details for ITA Server.
+        required: true
+      responses:
+        "204":
+          description: |
+            Successfully updated the Veritas ITA Server details.
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "404":
+          $ref: ./common.yaml#/components/responses/errorNotFound
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+  /ita/data-collection-state:
+    post:
+      description: |
+        Saves ita data collection state.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|UPDATE|`
+
+        Following permissions are also required.\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|SERVICE-PRINCIPAL|`\
+        Requires Operation: `|OPERATIONS|UPDATE|`
+      tags:
+        - Veritas IT Analytics
+      requestBody:
+        description: The request body datacollection status.
+        content:
+          application/vnd.netbackup+json;version=11.0:
+            schema:
+              $ref: "#/components/schemas/dataCollectionRequest"
+        required: true
+      responses:
+        "204":
+          description: |
+            Successfully saved the ita data collection state.
+        "400":
+          $ref: ./common.yaml#/components/responses/errorBadRequest
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "415":
+          $ref: ./common.yaml#/components/responses/errorUnsupportedMediaType
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+    get:
+      description: |
+        Retrieves the ita data collection state.
+
+        **Access Control**\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|MANAGE|ALTA-VIEW|DOMAIN|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+
+        Following permissions are also required.\
+        Enforcement Type: [API-Level](http://sort.veritas.com/public/documents/nbu/10.4/windowsandunix/productguides/html/getting-started#user-content-api-level-enforcement)\
+        Namespace: `|SECURITY|SERVICE-PRINCIPAL|`\
+        Requires Operation: `|OPERATIONS|VIEW|`
+      tags:
+        - Veritas IT Analytics
+      responses:
+        "200":
+          description: Status of data collection from NetBackup primary.
+          content:
+            application/vnd.netbackup+json;version=11.0:
+              schema:
+                $ref: "#/components/schemas/dataCollectionResponse"
+        "401":
+          $ref: ./common.yaml#/components/responses/errorUnauthorized
+        "406":
+          $ref: ./common.yaml#/components/responses/errorUnacceptable
+        "500":
+          $ref: ./common.yaml#/components/responses/errorInternalServerError
+components:
+  parameters:
+    itaServerId:
+      name: itaServerId
+      in: path
+      description: The Id of IT Analytics server
+      required: true
+      schema:
+        type: string
+  schemas:
+    postItaServerResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/postItaServerResponseDetails"
+    postItaServerResponseDetails:
+      type: object
+      required:
+        - id
+        - type
+        - attributes
+      properties:
+        id:
+          type: string
+          description: The enterprise ID of Veritas IT Analytics Platform.
+        type:
+          type: string
+          description: Represents Veritas IT Analytics Platform object.
+          enum:
+            - itaServer
+        attributes:
+          type: object
+          required:
+            - dataReceiverUrl
+          properties:
+            dataCollection:
+              type: boolean
+              description: Specifies that data collection is enabled for Veritas IT Analytics Platform.
+            proxyEnabled:
+              type: boolean
+              description: Specifies that a proxy server is used for communication with the IT Analytics Server.
+            dataReceiverUrl:
+              type: string
+              description: The Hostname or IP of Veritas IT Analytics Platform.
+        relationships:
+          $ref: "#/components/schemas/itaServerRelations"
+    getEmptyItaServerResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            type: string
+          maxItems: 0
+    getItaServerResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/getItaServerResponseDetails"
+    getItaServerResponseDetails:
+      type: array
+      items:
+        type: object
+        required:
+          - id
+          - type
+          - attributes
+        properties:
+          id:
+            type: string
+            description: The enterprise ID of Veritas IT Analytics Platform.
+          type:
+            type: string
+            description: Represents Veritas IT Analytics Platform object.
+            enum:
+              - itaServer
+          attributes:
+            type: object
+            required:
+              - dataReceiverUrl
+            properties:
+              dataReceiverUrl:
+                type: string
+                description: The url of Veritas IT Analytics Platform.
+              proxyEnabled:
+                type: boolean
+                description: Specifies that a proxy server is used for communication with the Alta View Server
+          relationships:
+            $ref: "#/components/schemas/itaServerRelations"
+    itaServerRelations:
+      type: object
+      properties:
+        proxyServer:
+          properties:
+            data:
+              $ref: "#/components/schemas/proxyServerRelationDefinition"
+          required:
+            - data
+    proxyServerRelationDefinition:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - proxyServer
+        id:
+          type: string
+      required:
+        - type
+        - id
+    dataCollectionRequest:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - itaDcInfo
+            attributes:
+              $ref: "#/components/schemas/dataCollectionInfo"
+    dataCollectionInfo:
+      type: object
+      description: State of data collection from NetBackup primary.
+      properties:
+        state:
+          type: string
+          description: Indicates the state of the host. Possible values are null, ACTIVATED, DEACTIVATED.
+          enum:
+            - ACTIVATED
+            - DEACTIVATED
+    dataCollectionResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - itaDcState
+            id:
+              type: string
+            attributes:
+              $ref: "#/components/schemas/dataCollectionStatus"
+    dataCollectionStatus:
+      type: object
+      description: State of data collection from NetBackup primary.
+      properties:
+        state:
+          type: string
+          description: Indicates the state of the host. Possible values are null, ACTIVATED, DEACTIVATED.
+          enum:
+            - ACTIVATED
+            - DEACTIVATED
+    updateItaServerRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - type
+            - id
+            - attributes
+          properties:
+            type:
+              type: string
+              description: The resource type to be created.
+              enum:
+                - updateItaServer
+            attributes:
+              $ref: "#/components/schemas/updateItaServerData"
+    updateItaServerData:
+      type: object
+      properties:
+        proxyEnabled:
+          type: boolean
+          description: Specifies that a proxy server is used for communication with the On Premise ITA Server.
+        proxyId:
+          type: string
+          description: |
+            Specifies the id of proxy server if used for communication with the On Premise ITA Server.
