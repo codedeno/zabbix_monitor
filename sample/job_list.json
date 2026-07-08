@@ -1,0 +1,782 @@
+{
+    "data": [
+        {
+            "type": "job",
+            "id": "5738",
+            "attributes": {
+                "jobId": 5738,
+                "parentJobId": 0,
+                "activeProcessId": 84625,
+                "mainProcessId": 84625,
+                "jobType": "DUPLICATE",
+                "policyName": "SLP_SLP_ALTERNATE",
+                "scheduleName": "Default_24x7_Window",
+                "clientName": "primary",
+                "jobOwner": "root",
+                "sourceMediaServerName": "media2",
+                "destinationStorageUnitName": "stu_duplica_media2_only",
+                "destinationMediaServerName": "media2",
+                "streamNumber": 0,
+                "copyNumber": 2,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 1024032,
+                "kilobytesToTransfer": 1024032,
+                "transferRate": 0,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:55:59.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-08T14:55:59.000Z",
+                "lastUpdateTime": "2026-07-08T14:56:07.506Z",
+                "childCount": 0,
+                "jobPath": "5738",
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT40.122S",
+                "activeElapsedTime": "PT40.122S",
+                "dteMode": "ON",
+                "workloadDisplayName": "primary"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5738"
+                },
+                "file-lists": {
+                    "href": "https://primary/netbackup/admin/jobs/5738/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://primary/netbackup/admin/jobs/5738/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783522559000:5738"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "5737",
+            "attributes": {
+                "jobId": 5737,
+                "parentJobId": 0,
+                "activeProcessId": 35494,
+                "jobType": "BACKUP",
+                "jobSubType": "SCHEDULED",
+                "policyType": "STANDARD",
+                "policyName": "Duplica_Test",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "5_minutes",
+                "clientName": "primary",
+                "jobOwner": "root",
+                "jobGroup": "root",
+                "backupId": "primary_1783522504",
+                "destinationStorageUnitName": "stu_only_media",
+                "destinationMediaServerName": "media",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 11,
+                "estimatedFiles": 11,
+                "kilobytesTransferred": 1024032,
+                "kilobytesToTransfer": 0,
+                "transferRate": 3093752,
+                "percentComplete": 100,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.9,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "acceleratorOptimization": 100,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:55:04.000Z",
+                "endTime": "2026-07-08T14:55:13.000Z",
+                "activeTryStartTime": "2026-07-08T14:55:04.000Z",
+                "lastUpdateTime": "2026-07-08T14:55:17.502Z",
+                "childCount": 0,
+                "jobPath": "5737",
+                "retentionLevel": 10,
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 3,
+                "elapsedTime": "PT9S",
+                "activeElapsedTime": "PT9S",
+                "dteMode": "ON",
+                "dedupSpaceRatio": 99.9,
+                "compressionSpaceRatio": 0,
+                "workloadDisplayName": "primary",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5737"
+                },
+                "file-lists": {
+                    "href": "https://primary/netbackup/admin/jobs/5737/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://primary/netbackup/admin/jobs/5737/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783522504000:5737"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "5736",
+            "attributes": {
+                "jobId": 5736,
+                "parentJobId": 0,
+                "activeProcessId": 83755,
+                "mainProcessId": 83755,
+                "jobType": "DUPLICATE",
+                "policyName": "SLP_SLP_ALTERNATE",
+                "scheduleName": "Default_24x7_Window",
+                "clientName": "primary",
+                "jobOwner": "root",
+                "sourceMediaServerName": "media2",
+                "destinationStorageUnitName": "stu_duplica_media2_only",
+                "destinationMediaServerName": "media2",
+                "streamNumber": 0,
+                "copyNumber": 2,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 1024032,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.9,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:50:59.000Z",
+                "endTime": "2026-07-08T14:52:03.000Z",
+                "activeTryStartTime": "2026-07-08T14:50:59.000Z",
+                "lastUpdateTime": "2026-07-08T14:52:07.488Z",
+                "childCount": 0,
+                "jobPath": "5736",
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M4S",
+                "activeElapsedTime": "PT1M4S",
+                "dteMode": "ON",
+                "dedupSpaceRatio": 99.9,
+                "compressionSpaceRatio": 0,
+                "workloadDisplayName": "primary"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5736"
+                },
+                "file-lists": {
+                    "href": "https://primary/netbackup/admin/jobs/5736/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://primary/netbackup/admin/jobs/5736/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783522259000:5736"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "5735",
+            "attributes": {
+                "jobId": 5735,
+                "parentJobId": 0,
+                "activeProcessId": 35239,
+                "jobType": "BACKUP",
+                "jobSubType": "SCHEDULED",
+                "policyType": "STANDARD",
+                "policyName": "Duplica_Test",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "5_minutes",
+                "clientName": "primary",
+                "jobOwner": "root",
+                "jobGroup": "root",
+                "backupId": "primary_1783522204",
+                "destinationStorageUnitName": "stu_only_media",
+                "destinationMediaServerName": "media",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 11,
+                "estimatedFiles": 11,
+                "kilobytesTransferred": 1024032,
+                "kilobytesToTransfer": 0,
+                "transferRate": 3324779,
+                "percentComplete": 100,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.9,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "acceleratorOptimization": 100,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:50:04.000Z",
+                "endTime": "2026-07-08T14:50:13.000Z",
+                "activeTryStartTime": "2026-07-08T14:50:04.000Z",
+                "lastUpdateTime": "2026-07-08T14:50:17.479Z",
+                "childCount": 0,
+                "jobPath": "5735",
+                "retentionLevel": 10,
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 3,
+                "elapsedTime": "PT9S",
+                "activeElapsedTime": "PT9S",
+                "dteMode": "ON",
+                "dedupSpaceRatio": 99.9,
+                "compressionSpaceRatio": 0,
+                "workloadDisplayName": "primary",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5735"
+                },
+                "file-lists": {
+                    "href": "https://primary/netbackup/admin/jobs/5735/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://primary/netbackup/admin/jobs/5735/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783522204000:5735"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "5734",
+            "attributes": {
+                "jobId": 5734,
+                "parentJobId": 0,
+                "activeProcessId": 82918,
+                "mainProcessId": 82918,
+                "jobType": "DUPLICATE",
+                "policyName": "SLP_SLP_ALTERNATE",
+                "scheduleName": "Default_24x7_Window",
+                "clientName": "primary",
+                "jobOwner": "root",
+                "sourceMediaServerName": "media2",
+                "destinationStorageUnitName": "stu_duplica_media2_only",
+                "destinationMediaServerName": "media2",
+                "streamNumber": 0,
+                "copyNumber": 2,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 1024032,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.9,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:45:59.000Z",
+                "endTime": "2026-07-08T14:47:03.000Z",
+                "activeTryStartTime": "2026-07-08T14:45:59.000Z",
+                "lastUpdateTime": "2026-07-08T14:47:07.468Z",
+                "childCount": 0,
+                "jobPath": "5734",
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M4S",
+                "activeElapsedTime": "PT1M4S",
+                "dteMode": "ON",
+                "dedupSpaceRatio": 99.9,
+                "compressionSpaceRatio": 0,
+                "workloadDisplayName": "primary"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5734"
+                },
+                "file-lists": {
+                    "href": "https://primary/netbackup/admin/jobs/5734/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://primary/netbackup/admin/jobs/5734/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783521959000:5734"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "5733",
+            "attributes": {
+                "jobId": 5733,
+                "parentJobId": 0,
+                "activeProcessId": 34981,
+                "jobType": "BACKUP",
+                "jobSubType": "SCHEDULED",
+                "policyType": "STANDARD",
+                "policyName": "Duplica_Test",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "5_minutes",
+                "clientName": "primary",
+                "jobOwner": "root",
+                "jobGroup": "root",
+                "backupId": "primary_1783521904",
+                "destinationStorageUnitName": "stu_only_media",
+                "destinationMediaServerName": "media",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 11,
+                "estimatedFiles": 11,
+                "kilobytesTransferred": 1024032,
+                "kilobytesToTransfer": 0,
+                "transferRate": 3459567,
+                "percentComplete": 100,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.9,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "acceleratorOptimization": 100,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:45:04.000Z",
+                "endTime": "2026-07-08T14:45:13.000Z",
+                "activeTryStartTime": "2026-07-08T14:45:04.000Z",
+                "lastUpdateTime": "2026-07-08T14:45:17.459Z",
+                "childCount": 0,
+                "jobPath": "5733",
+                "retentionLevel": 10,
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 3,
+                "elapsedTime": "PT9S",
+                "activeElapsedTime": "PT9S",
+                "dteMode": "ON",
+                "dedupSpaceRatio": 99.9,
+                "compressionSpaceRatio": 0,
+                "workloadDisplayName": "primary",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5733"
+                },
+                "file-lists": {
+                    "href": "https://primary/netbackup/admin/jobs/5733/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://primary/netbackup/admin/jobs/5733/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783521904000:5733"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "5732",
+            "attributes": {
+                "jobId": 5732,
+                "parentJobId": 0,
+                "activeProcessId": 82090,
+                "mainProcessId": 82090,
+                "jobType": "DUPLICATE",
+                "policyName": "SLP_SLP_ALTERNATE",
+                "scheduleName": "Default_24x7_Window",
+                "clientName": "primary",
+                "jobOwner": "root",
+                "sourceMediaServerName": "media2",
+                "destinationStorageUnitName": "stu_duplica_media2_only",
+                "destinationMediaServerName": "media2",
+                "streamNumber": 0,
+                "copyNumber": 2,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 1024032,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.9,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:40:59.000Z",
+                "endTime": "2026-07-08T14:42:03.000Z",
+                "activeTryStartTime": "2026-07-08T14:40:59.000Z",
+                "lastUpdateTime": "2026-07-08T14:42:07.446Z",
+                "childCount": 0,
+                "jobPath": "5732",
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M4S",
+                "activeElapsedTime": "PT1M4S",
+                "dteMode": "ON",
+                "dedupSpaceRatio": 99.9,
+                "compressionSpaceRatio": 0,
+                "workloadDisplayName": "primary"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5732"
+                },
+                "file-lists": {
+                    "href": "https://primary/netbackup/admin/jobs/5732/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://primary/netbackup/admin/jobs/5732/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783521659000:5732"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "5731",
+            "attributes": {
+                "jobId": 5731,
+                "parentJobId": 0,
+                "activeProcessId": 34732,
+                "jobType": "BACKUP",
+                "jobSubType": "SCHEDULED",
+                "policyType": "STANDARD",
+                "policyName": "Duplica_Test",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "5_minutes",
+                "clientName": "primary",
+                "jobOwner": "root",
+                "jobGroup": "root",
+                "backupId": "primary_1783521604",
+                "destinationStorageUnitName": "stu_only_media",
+                "destinationMediaServerName": "media",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 11,
+                "estimatedFiles": 11,
+                "kilobytesTransferred": 1024032,
+                "kilobytesToTransfer": 0,
+                "transferRate": 3618487,
+                "percentComplete": 100,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.9,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "acceleratorOptimization": 100,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:40:04.000Z",
+                "endTime": "2026-07-08T14:40:11.000Z",
+                "activeTryStartTime": "2026-07-08T14:40:04.000Z",
+                "lastUpdateTime": "2026-07-08T14:40:17.433Z",
+                "childCount": 0,
+                "jobPath": "5731",
+                "retentionLevel": 10,
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 3,
+                "elapsedTime": "PT7S",
+                "activeElapsedTime": "PT7S",
+                "dteMode": "ON",
+                "dedupSpaceRatio": 99.9,
+                "compressionSpaceRatio": 0,
+                "workloadDisplayName": "primary",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5731"
+                },
+                "file-lists": {
+                    "href": "https://primary/netbackup/admin/jobs/5731/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://primary/netbackup/admin/jobs/5731/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783521604000:5731"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "5730",
+            "attributes": {
+                "jobId": 5730,
+                "parentJobId": 0,
+                "activeProcessId": 81284,
+                "mainProcessId": 81284,
+                "jobType": "DUPLICATE",
+                "policyName": "SLP_SLP_ALTERNATE",
+                "scheduleName": "Default_24x7_Window",
+                "clientName": "primary",
+                "jobOwner": "root",
+                "sourceMediaServerName": "media2",
+                "destinationStorageUnitName": "stu_duplica_media2_only",
+                "destinationMediaServerName": "media2",
+                "streamNumber": 0,
+                "copyNumber": 2,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 1024032,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.9,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:35:58.000Z",
+                "endTime": "2026-07-08T14:37:03.000Z",
+                "activeTryStartTime": "2026-07-08T14:35:58.000Z",
+                "lastUpdateTime": "2026-07-08T14:37:07.417Z",
+                "childCount": 0,
+                "jobPath": "5730",
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M5S",
+                "activeElapsedTime": "PT1M5S",
+                "dteMode": "ON",
+                "dedupSpaceRatio": 99.9,
+                "compressionSpaceRatio": 0,
+                "workloadDisplayName": "primary"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5730"
+                },
+                "file-lists": {
+                    "href": "https://primary/netbackup/admin/jobs/5730/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://primary/netbackup/admin/jobs/5730/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783521358000:5730"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "5729",
+            "attributes": {
+                "jobId": 5729,
+                "parentJobId": 0,
+                "activeProcessId": 34475,
+                "jobType": "BACKUP",
+                "jobSubType": "SCHEDULED",
+                "policyType": "STANDARD",
+                "policyName": "Duplica_Test",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "5_minutes",
+                "clientName": "primary",
+                "jobOwner": "root",
+                "jobGroup": "root",
+                "backupId": "primary_1783521304",
+                "destinationStorageUnitName": "stu_only_media",
+                "destinationMediaServerName": "media",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 11,
+                "estimatedFiles": 11,
+                "kilobytesTransferred": 1024032,
+                "kilobytesToTransfer": 0,
+                "transferRate": 2311584,
+                "percentComplete": 100,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.9,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "acceleratorOptimization": 100,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:35:04.000Z",
+                "endTime": "2026-07-08T14:35:13.000Z",
+                "activeTryStartTime": "2026-07-08T14:35:04.000Z",
+                "lastUpdateTime": "2026-07-08T14:35:17.410Z",
+                "childCount": 0,
+                "jobPath": "5729",
+                "retentionLevel": 10,
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 6,
+                "elapsedTime": "PT9S",
+                "activeElapsedTime": "PT9S",
+                "dteMode": "ON",
+                "dedupSpaceRatio": 99.9,
+                "compressionSpaceRatio": 0,
+                "workloadDisplayName": "primary",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5729"
+                },
+                "file-lists": {
+                    "href": "https://primary/netbackup/admin/jobs/5729/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://primary/netbackup/admin/jobs/5729/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783521304000:5729"
+                }
+            }
+        }
+    ],
+    "meta": {
+        "pagination": {
+            "next": "1783521304000:5729",
+            "limit": 10
+        }
+    },
+    "links": {
+        "next": {
+            "href": "https://primary/netbackup/admin/jobs?page%5Blimit%5D=10&page%5Bafter%5D=1783521304000:5729&sort=-startTime,jobId"
+        },
+        "self": {
+            "href": "https://primary/netbackup/admin/jobs?page%5Blimit%5D=10&sort=-startTime,jobId"
+        },
+        "first": {
+            "href": "https://primary/netbackup/admin/jobs?page%5Blimit%5D=10&sort=-startTime,jobId"
+        }
+    }
+}
