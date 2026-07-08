@@ -17,9 +17,11 @@ Parametri:
       per la risposta di questo endpoint)
     - Header Authorization: API Key del dominio (nessun prefisso "Bearer")
 Uso:
-    python3 sample_export_jobs_to_csv.py
-    (richiede un file credentials.json nella root del progetto, non incluso nel repo,
-     con struttura [{"domain": ..., "username": ..., "ApiKey": ...}, ...])
+    python3 export_jobs_to_csv.py
+    (va lanciato dalla directory che contiene credentials.json e la cartella certificates/;
+     il certificato CA di ciascun dominio viene verificato/scaricato automaticamente tramite
+     netbackup_auth.gestisci_certificato prima delle chiamate ai job, e il CSV viene scritto
+     nella directory corrente da cui lo script viene eseguito)
 Risposta attesa: 200 con body {"data": [...], "links": {"next": {...}}, "meta": {...}}
 """
 
@@ -29,8 +31,10 @@ import threading
 
 import requests
 
+from netbackup_auth import gestisci_certificato
+
 CREDENTIALS_PATH = "credentials.json"
-CSV_OUTPUT_PATH = "sample/jobs_export.csv"
+CSV_OUTPUT_PATH = "jobs_export.csv"
 CSV_FIELDS = [
     "job_id",
     "domain",
@@ -51,7 +55,7 @@ def load_credentials(path=CREDENTIALS_PATH):
         return json.load(f)
 
 
-def fetch_jobs_for_domain(domain, api_key, page_limit=PAGE_LIMIT):
+def fetch_jobs_for_domain(domain, api_key, cert_path, page_limit=PAGE_LIMIT):
     """
     Recupera tutti i job di un dominio NetBackup seguendo la paginazione cursor-based.
     Eseguita all'interno di un thread dedicato al dominio: non scrive mai su disco,
@@ -69,7 +73,7 @@ def fetch_jobs_for_domain(domain, api_key, page_limit=PAGE_LIMIT):
     rows = []
     while url:
         try:
-            response = requests.get(url, headers=headers, verify=False, timeout=30)
+            response = requests.get(url, headers=headers, verify=cert_path, timeout=30)
         except requests.exceptions.RequestException as exc:
             print(f"[{domain}] Errore di connessione: {exc}")
             break
@@ -109,19 +113,31 @@ def write_jobs_csv(all_rows, csv_path=CSV_OUTPUT_PATH):
         writer.writerows(all_rows)
 
 
-def _thread_target(domain, api_key, results, index):
-    results[index] = fetch_jobs_for_domain(domain, api_key)
+def _thread_target(domain, api_key, cert_path, results, index):
+    results[index] = fetch_jobs_for_domain(domain, api_key, cert_path)
 
 
 if __name__ == "__main__":
     credentials = load_credentials()
 
-    results = [None] * len(credentials)
+    # Risoluzione dei certificati CA in sequenza (non nei thread), per evitare
+    # una race condition su os.makedirs(CERTIFICATES_DIR) se piu' domini fossero
+    # privi di certificato locale contemporaneamente.
+    domains_to_fetch = []
+    for cred in credentials:
+        domain = cred["domain"]
+        cert_path = gestisci_certificato(domain)
+        if not cert_path:
+            print(f"[{domain}] Impossibile ottenere il certificato CA, dominio saltato.")
+            continue
+        domains_to_fetch.append((domain, cred["ApiKey"], cert_path))
+
+    results = [None] * len(domains_to_fetch)
     threads = []
-    for index, cred in enumerate(credentials):
+    for index, (domain, api_key, cert_path) in enumerate(domains_to_fetch):
         t = threading.Thread(
             target=_thread_target,
-            args=(cred["domain"], cred["ApiKey"], results, index),
+            args=(domain, api_key, cert_path, results, index),
         )
         threads.append(t)
         t.start()
