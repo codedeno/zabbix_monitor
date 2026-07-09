@@ -1,3 +1,6 @@
 credentials.json
 certificates/*
 jobs_export.csv
+.venv/
+netbackup_jobs.db
+__pycache__/
