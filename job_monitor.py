@@ -52,6 +52,7 @@ ROME_TZ = ZoneInfo("Europe/Rome")
 CSV_FIELDS = [
     "primary_server",
     "job_id",
+    "job_type",
     "policy_type",
     "state",
     "updated",
@@ -68,6 +69,7 @@ DDL_JOBS_TABLE = """
 CREATE TABLE IF NOT EXISTS jobs (
     primary_server   TEXT    NOT NULL,
     job_id           INTEGER NOT NULL,
+    job_type         TEXT,
     policy_type      TEXT,
     state            TEXT    NOT NULL,
     updated          TEXT    NOT NULL,
@@ -102,12 +104,14 @@ def to_rome_str(dt_utc):
 
 
 def derive_result(state, status):
-    """OK/ERROR sono significativi solo a job concluso (state=DONE); status=0 e' successo,
-    qualsiasi altro valore (incluso 1, warning) e' trattato come errore su richiesta esplicita."""
+    """OK/WARNING/ERROR sono significativi solo a job concluso (state=DONE); status=0 e'
+    successo, status=1 e' un warning NetBackup, qualsiasi altro valore e' un errore."""
     if state != "DONE":
         return "RUNNING"
     if status == 0:
         return "OK"
+    if status == 1:
+        return "WARNING"
     return "ERROR"
 
 
@@ -128,6 +132,7 @@ def transform_job(domain, attributes):
     return {
         "primary_server": domain,
         "job_id": attributes.get("jobId"),
+        "job_type": attributes.get("jobType"),
         "policy_type": policy_type,
         "state": state,
         "updated": to_rome_str(updated_utc),
@@ -226,12 +231,12 @@ def upsert_jobs(conn, rows):
             cur.execute(
                 """
                 INSERT INTO jobs (
-                    primary_server, job_id, policy_type, state, updated, client,
+                    primary_server, job_id, job_type, policy_type, state, updated, client,
                     status, policy_name, schedule_type, schedule_name, percent_complete, result
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
-                    row["primary_server"], row["job_id"], row["policy_type"], row["state"],
+                    row["primary_server"], row["job_id"], row["job_type"], row["policy_type"], row["state"],
                     row["updated"], row["client"], row["status"], row["policy_name"],
                     row["schedule_type"], row["schedule_name"], row["percent_complete"], row["result"],
                 ),
@@ -254,13 +259,13 @@ def upsert_jobs(conn, rows):
         cur.execute(
             """
             UPDATE jobs SET
-                policy_type = ?, state = ?, updated = ?, client = ?, status = ?,
+                job_type = ?, policy_type = ?, state = ?, updated = ?, client = ?, status = ?,
                 policy_name = ?, schedule_type = ?, schedule_name = ?,
                 percent_complete = ?, result = ?
             WHERE primary_server = ? AND job_id = ?
             """,
             (
-                row["policy_type"], row["state"], row["updated"], row["client"], row["status"],
+                row["job_type"], row["policy_type"], row["state"], row["updated"], row["client"], row["status"],
                 row["policy_name"], row["schedule_type"], row["schedule_name"],
                 row["percent_complete"], row["result"],
                 row["primary_server"], row["job_id"],
