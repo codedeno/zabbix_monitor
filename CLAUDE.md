@@ -15,6 +15,7 @@ There is **no build, lint, or test tooling** and no dependency manifest. The Pyt
 - `doc_10.4.0.1/` — 26 OpenAPI 3.0 YAML specs, one per NetBackup functional area (`config.yaml`, `storage.yaml`, `security.yaml`, `recovery.yaml`, `admin.yaml`, `catalog.yaml`, `malware.yaml`, …). These are the **source of truth** for endpoints, request/response schemas, required media-type versions, and RBAC enforcement. Several are very large (`config.yaml` ~600 KB, `storage.yaml` / `security.yaml` ~500 KB) — grep for a path or `operationId` rather than reading whole files.
 - `doc_10.4.0.1/getting-started.md` — the authoritative narrative guide: authentication (JWT / API key / MFA / adaptive MFA), SSL cert validation, RBAC model, versioning rules, pagination, filtering, async patterns. Read this before writing or explaining any API interaction.
 - `sample/` — nine Python snippets (`sample_login.py`, `sample_logout.py`, `sample_create_policy.py`, `sample_list_policies.py`, `sample_get_policy.py`, `sample_delete_policy.py`, `sample_create_storage_unit.py`, `sample_get_storage_units.py`, `sample_get_certificate.py`, `sample_get_slps.py`). Each is a self-contained `requests`-based function with an Italian docstring describing endpoint, HTTP method, headers/params/payload, and expected status code.
+- `doc/job_guide.md` — guida (in italiano) alla lettura del JSON restituito da `GET /netbackup/admin/jobs`: semantica dei campi `status`/`state`/`jobType`/`childCount` e differenze tra workload (SQL Server, Oracle, Filesystem, VMware) ai fini della determinazione di successo/fallimento dei backup per client.
 
 ## Development Rules and Workflow
 
@@ -37,4 +38,4 @@ There is **no build, lint, or test tooling** and no dependency manifest. The Pyt
 
 ## Error Handling / Database Errori
 
-- In caso di errore durante l'esecuzione di script Python, la connessione o l'interazione con le API di NetBackup, l'agente artificiale deve consultare **solo ed esclusivamente** il file [errors.md]errors.md) nella root principale per identificare le soluzioni note e le cause tipiche degli errori riscontrati.
+- In caso di errore durante l'esecuzione di script Python, la connessione o l'interazione con le API di NetBackup, l'agente artificiale deve consultare **solo ed esclusivamente** il file errors.md nella root principale per identificare le soluzioni note e le cause tipiche degli errori riscontrati.
