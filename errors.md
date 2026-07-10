@@ -75,3 +75,22 @@ Questo file raccoglie gli errori riscontrati durante lo sviluppo, la configurazi
      ```python
      requests.post(url, headers=headers, json=payload, verify='certificates/dominio_server.pem')
      ```
+
+---
+
+## 6. Installazione Offline: `No matching distribution found for charset_normalizer`
+
+- **Errore riscontrato:** `pip install --no-index --find-links=vendor_wheels -r requirements.txt` fallisce con `ERROR: Could not find a version that satisfies the requirement charset_normalizer<4,>=2 (from requests)`.
+- **Contesto:** Preparazione dell'ambiente offline seguendo `procedura_offline.MD`. La cartella `vendor_wheels/` era stata popolata con `pip download` eseguito su macOS.
+- **Causa:** `charset_normalizer` (dipendenza transitiva di `requests`) pubblica anche wheel binari specifici per piattaforma/interprete (es. `charset_normalizer-3.4.9-cp310-cp310-macosx_10_9_universal2.whl`), a differenza di `requests`/`tzdata`/`zabbix_utils` che sono `py3-none-any`. Un `pip download` lanciato su macOS scarica quindi il wheel compilato per macOS, incompatibile con il server Linux offline; con `--no-index` pip non può cercare alternative e fallisce.
+- **Soluzione:** Rieseguire `pip download` sulla macchina con internet specificando esplicitamente piattaforma/versione Python/ABI del server target, invece di lasciare che pip usi l'interprete locale:
+  ```bash
+  rm -rf vendor_wheels/
+  pip download -r requirements.txt -d vendor_wheels/ \
+    --platform manylinux2014_x86_64 \
+    --python-version 3.9 \
+    --implementation cp \
+    --abi cp39 \
+    --only-binary=:all:
+  ```
+  Adattare `--python-version`/`--abi` alla versione Python del server offline (`python3 --version`) e `--platform` alla sua architettura (`uname -m`).
