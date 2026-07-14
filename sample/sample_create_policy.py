@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: 2026 Denis Gerolini <denis.gerolini@datacare.it>
+# This file is part of zabbix_monitor
+
 """
 Snippet: Creazione Policy
 Scopo: Creare una nuova policy su NetBackup inviando la struttura JSON completa (Policy Payload).

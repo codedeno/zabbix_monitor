@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: 2026 Denis Gerolini <denis.gerolini@datacare.it>
+# This file is part of zabbix_monitor
+
 """
 Script: job_monitor.py
 Scopo: Interroga periodicamente GET /netbackup/admin/jobs su ciascun primary server
@@ -63,6 +68,22 @@ CSV_FIELDS = [
     "schedule_name",
     "percent_complete",
     "result",
+]
+
+CSV_HEADERS = [
+    "$1_primary_server",
+    "$2_job_id",
+    "$3_job_type",
+    "$4_policy_type",
+    "$5_state",
+    "$6_updated",
+    "$7_client",
+    "$8_st",
+    "$9_policy_name",
+    "$10_schedule_type",
+    "$11_schedule_name",
+    "$12_%compl",
+    "$13_res",
 ]
 
 DDL_JOBS_TABLE = """
@@ -284,8 +305,8 @@ def export_csv(conn, csv_path=CSV_PATH):
     rows = cur.fetchall()
 
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(CSV_FIELDS)
+        writer = csv.writer(f, lineterminator='\n')
+        writer.writerow(CSV_HEADERS)
         writer.writerows(rows)
 
     print(f"CSV rigenerato: {csv_path} ({len(rows)} righe).")

@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: 2026 Denis Gerolini <denis.gerolini@datacare.it>
+# This file is part of zabbix_monitor
+
 """
 Snippet: Export multithread dei job NetBackup su CSV
 Scopo: Per ciascun dominio NetBackup presente in credentials.json, recupera TUTTI i job
