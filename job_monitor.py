@@ -32,6 +32,7 @@ Risposta attesa: 200 con body {"data": [...], "links": {"next": {...}}, "meta": 
 
 import argparse
 import csv
+import os
 import sqlite3
 import threading
 from datetime import datetime, timedelta, timezone
@@ -40,6 +41,7 @@ from zoneinfo import ZoneInfo
 
 import requests
 
+import netbackup_auth
 from netbackup_auth import (
     carica_credenziali,
     esegui_login,
@@ -53,6 +55,51 @@ API_VERSION = "11.0"
 PAGE_LIMIT = 100
 LOOKBACK_HOURS = 24
 ROME_TZ = ZoneInfo("Europe/Rome")
+
+LOG_DIR = "log"
+LOG_RETENTION_DAYS = 10
+log_lock = threading.Lock()
+
+
+def setup_logging():
+    """Crea la cartella log/ se non presente ed elimina i log più vecchi di 10 giorni."""
+    if not os.path.exists(LOG_DIR):
+        os.makedirs(LOG_DIR)
+
+    # Cancella i log più vecchi di 10 giorni
+    now = datetime.now()
+    limit = now - timedelta(days=LOG_RETENTION_DAYS)
+    try:
+        for filename in os.listdir(LOG_DIR):
+            if filename.startswith("log_") and filename.endswith(".log"):
+                filepath = os.path.join(LOG_DIR, filename)
+                file_mtime = datetime.fromtimestamp(os.path.getmtime(filepath))
+                if file_mtime < limit:
+                    os.remove(filepath)
+    except Exception as e:
+        print(f"Errore durante la pulizia dei vecchi log: {e}")
+
+
+def get_log_filepath():
+    """Genera il percorso del file di log per la giornata corrente."""
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    return os.path.join(LOG_DIR, f"log_{today_str}.log")
+
+
+def log_api_command(method, url):
+    """Scrive nel log l'operazione API nel formato richiesto: HH:MM:SS GG/MM/AAA Comando_API."""
+    now = datetime.now()
+    timestamp_str = now.strftime("%H:%M:%S %d/%m/%Y")
+    log_line = f"{timestamp_str} {method} {url}\n"
+
+    filepath = get_log_filepath()
+    with log_lock:
+        try:
+            with open(filepath, "a", encoding="utf-8") as f:
+                f.write(log_line)
+        except Exception as e:
+            print(f"Errore durante la scrittura del log: {e}")
+
 
 CSV_FIELDS = [
     "primary_server",
@@ -193,6 +240,7 @@ def _execute_bulk_fetch(domain, url, headers, cert_path):
 
     while url:
         try:
+            log_api_command("GET", url)
             response = requests.get(url, headers=headers, verify=cert_path, timeout=30)
         except requests.exceptions.RequestException as exc:
             print(f"[{domain}] Errore di connessione: {exc}")
@@ -230,6 +278,7 @@ def fetch_single_job(domain, headers, cert_path, job_id):
     """Interroga direttamente l'endpoint per un singolo job."""
     url = f"https://{domain}:1556/netbackup/admin/jobs/{job_id}"
     try:
+        log_api_command("GET", url)
         response = requests.get(url, headers=headers, verify=cert_path, timeout=30)
     except requests.exceptions.RequestException as exc:
         print(f"[{domain}] Errore di connessione per job {job_id}: {exc}")
@@ -369,6 +418,9 @@ def _thread_target(domain, username, api_key, cert_path, since_utc, domain_state
 
 
 def main():
+    setup_logging()
+    netbackup_auth.logger_callback = log_api_command
+
     parser = argparse.ArgumentParser(description="Monitor job NetBackup -> SQLite/CSV.")
     parser.add_argument(
         "--lookback-hours",

@@ -39,3 +39,6 @@ There is **no build, lint, or test tooling** and no dependency manifest. The Pyt
 ## Error Handling / Database Errori
 
 - In caso di errore durante l'esecuzione di script Python, la connessione o l'interazione con le API di NetBackup, l'agente artificiale deve consultare **solo ed esclusivamente** il file errors.md nella root principale per identificare le soluzioni note e le cause tipiche degli errori riscontrati.
+
+## Sync GEMINI.md
+If this file if updated the assistant must update the CLAUDE.md file with the same content.

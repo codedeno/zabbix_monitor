@@ -21,6 +21,9 @@ warnings.filterwarnings('ignore', message='Unverified HTTPS request')
 CREDENTIALS_FILE = "credentials.json"
 CERTIFICATES_DIR = "certificates"
 
+# Callback per registrare le chiamate API effettuate (es. logging)
+logger_callback = None
+
 def carica_credenziali():
     """Carica l'elenco delle credenziali dal file JSON."""
     if not os.path.exists(CREDENTIALS_FILE):
@@ -55,6 +58,8 @@ def gestisci_certificato(domain):
 
     try:
         # Per scaricare il certificato CA usiamo verify=False poiché non lo possediamo ancora
+        if logger_callback:
+            logger_callback("GET", url)
         response = requests.get(url, headers=headers, verify=False, timeout=10)
         
         if response.status_code == 200:
@@ -91,6 +96,8 @@ def esegui_login(domain, username, api_key, cert_path):
     }
 
     try:
+        if logger_callback:
+            logger_callback("POST", url)
         response = requests.post(url, headers=headers, json=payload, verify=cert_path, timeout=15)
         
         if response.status_code == 201:
@@ -113,6 +120,8 @@ def esegui_logout(domain, token, cert_path):
     }
 
     try:
+        if logger_callback:
+            logger_callback("POST", url)
         response = requests.post(url, headers=headers, verify=cert_path, timeout=15)
         
         if response.status_code in [200, 204]:
