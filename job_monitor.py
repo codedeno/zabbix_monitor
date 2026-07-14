@@ -157,6 +157,10 @@ def init_db(db_path=DB_PATH):
     """Apre (creandolo se necessario) il database SQLite con la tabella jobs."""
     conn = sqlite3.connect(db_path)
     conn.execute(DDL_JOBS_TABLE)
+    
+    # Migrazione per dati storici: rimuove lo spazio dal timestamp di aggiornamento
+    conn.execute("UPDATE jobs SET updated = replace(updated, ' ', 'T') WHERE updated LIKE '% %'")
+    
     conn.commit()
     return conn
 
@@ -167,8 +171,8 @@ def parse_utc(timestamp):
 
 
 def to_rome_str(dt_utc):
-    """Converte un datetime UTC nella stringa locale Europe/Rome 'YYYY-MM-DD HH:MM:SS'."""
-    return dt_utc.astimezone(ROME_TZ).strftime("%Y-%m-%d %H:%M:%S")
+    """Converte un datetime UTC nella stringa locale Europe/Rome 'YYYY-MM-DDTHH:MM:SS'."""
+    return dt_utc.astimezone(ROME_TZ).strftime("%Y-%m-%dT%H:%M:%S")
 
 
 def derive_result(state, status):
