@@ -182,22 +182,8 @@ def build_jobs_url(domain, since_utc, page_limit=PAGE_LIMIT):
     )
 
 
-def fetch_jobs_for_domain(domain, username, api_key, cert_path, since_utc):
-    """
-    Login, recupera (paginazione cursor-based) tutti i job aggiornati dopo since_utc per
-    il dominio, poi logout. Eseguita in un thread dedicato al dominio: non scrive mai su
-    disco, ritorna solo la lista di righe pronte per sqlite/CSV.
-    """
-    token = esegui_login(domain, username, api_key, cert_path)
-    if not token:
-        print(f"[{domain}] Login fallito, dominio saltato.")
-        return []
-
-    headers = {
-        "Accept": f"application/vnd.netbackup+json;version={API_VERSION}",
-        "Authorization": token,
-    }
-    url = build_jobs_url(domain, since_utc)
+def _execute_bulk_fetch(domain, url, headers, cert_path):
+    """Esegue un ciclo di fetch paginato (cursor-based) su un URL bulk."""
     unfiltered_url = (
         f"https://{domain}:1556/netbackup/admin/jobs"
         f"?page%5Blimit%5D={PAGE_LIMIT}&sort=-lastUpdateTime,jobId"
@@ -212,8 +198,8 @@ def fetch_jobs_for_domain(domain, username, api_key, cert_path, since_utc):
             print(f"[{domain}] Errore di connessione: {exc}")
             break
 
-        if response.status_code == 400 and not used_fallback:
-            print(f"[{domain}] Filtro lastUpdateTime rifiutato (400), ripiego su fetch non filtrato.")
+        if response.status_code == 400 and not used_fallback and "filter=" in url:
+            print(f"[{domain}] Filtro rifiutato (400), ripiego su fetch non filtrato.")
             used_fallback = True
             url = unfiltered_url
             continue
@@ -231,9 +217,46 @@ def fetch_jobs_for_domain(domain, username, api_key, cert_path, since_utc):
 
         url = body.get("links", {}).get("next", {}).get("href")
 
-    esegui_logout(domain, token, cert_path)
-    print(f"[{domain}] Recuperati {len(rows)} job.")
     return rows
+
+
+def fetch_jobs_for_domain(domain, headers, cert_path, since_utc):
+    """Prima scansione: recupera (paginazione cursor-based) tutti i job aggiornati dopo since_utc."""
+    url = build_jobs_url(domain, since_utc)
+    return _execute_bulk_fetch(domain, url, headers, cert_path)
+
+
+def fetch_single_job(domain, headers, cert_path, job_id):
+    """Interroga direttamente l'endpoint per un singolo job."""
+    url = f"https://{domain}:1556/netbackup/admin/jobs/{job_id}"
+    try:
+        response = requests.get(url, headers=headers, verify=cert_path, timeout=30)
+    except requests.exceptions.RequestException as exc:
+        print(f"[{domain}] Errore di connessione per job {job_id}: {exc}")
+        return None
+
+    if response.status_code != 200:
+        print(f"[{domain}] Errore {response.status_code} su job {job_id}: {response.text}")
+        return None
+
+    body = response.json()
+    job_data = body.get("data", {})
+    attributes = job_data.get("attributes", {})
+    if not attributes.get("jobId") or not attributes.get("lastUpdateTime"):
+        return None
+    return transform_job(domain, attributes)
+
+
+def fetch_incremental_jobs(domain, headers, cert_path, max_job_id):
+    """Scansione incrementale: recupera i nuovi job creati dopo max_job_id."""
+    filter_expr = f"jobId gt {max_job_id}"
+    url = (
+        f"https://{domain}:1556/netbackup/admin/jobs"
+        f"?page%5Blimit%5D={PAGE_LIMIT}"
+        f"&sort=-lastUpdateTime,jobId"
+        f"&filter={quote(filter_expr, safe='')}"
+    )
+    return _execute_bulk_fetch(domain, url, headers, cert_path)
 
 
 def upsert_jobs(conn, rows):
@@ -312,8 +335,37 @@ def export_csv(conn, csv_path=CSV_PATH):
     print(f"CSV rigenerato: {csv_path} ({len(rows)} righe).")
 
 
-def _thread_target(domain, username, api_key, cert_path, since_utc, results, index):
-    results[index] = fetch_jobs_for_domain(domain, username, api_key, cert_path, since_utc)
+def _thread_target(domain, username, api_key, cert_path, since_utc, domain_state, results, index):
+    token = esegui_login(domain, username, api_key, cert_path)
+    if not token:
+        print(f"[{domain}] Login fallito, dominio saltato.")
+        results[index] = []
+        return
+
+    headers = {
+        "Accept": f"application/vnd.netbackup+json;version={API_VERSION}",
+        "Authorization": token,
+    }
+
+    rows = []
+    if domain_state["is_empty"]:
+        # Prima scansione
+        rows = fetch_jobs_for_domain(domain, headers, cert_path, since_utc)
+        print(f"[{domain}] Prima scansione: recuperati {len(rows)} job.")
+    else:
+        # Scansioni successive: 1. Aggiornamento pending
+        for job_id in domain_state["pending_jobs"]:
+            job_row = fetch_single_job(domain, headers, cert_path, job_id)
+            if job_row:
+                rows.append(job_row)
+        
+        # 2. Fetch incrementale nuovi job
+        new_rows = fetch_incremental_jobs(domain, headers, cert_path, domain_state["max_job_id"])
+        rows.extend(new_rows)
+        print(f"[{domain}] Scansione successiva: aggiornati {len(domain_state['pending_jobs'])} pendenti, recuperati {len(new_rows)} nuovi job.")
+
+    esegui_logout(domain, token, cert_path)
+    results[index] = rows
 
 
 def main():
@@ -332,6 +384,26 @@ def main():
         print("Nessuna credenziale da elaborare.")
         return
 
+    conn = init_db()
+
+    # Pre-computo dello stato dal DB per ogni dominio
+    domain_states = {}
+    for cred in credentials:
+        domain = cred["domain"]
+        cur = conn.cursor()
+        cur.execute("SELECT MAX(job_id) FROM jobs WHERE primary_server = ?", (domain,))
+        row = cur.fetchone()
+        max_job_id = row[0] if row and row[0] is not None else None
+        
+        cur.execute("SELECT job_id FROM jobs WHERE primary_server = ? AND state != 'DONE'", (domain,))
+        pending_jobs = [r[0] for r in cur.fetchall()]
+        
+        domain_states[domain] = {
+            "is_empty": max_job_id is None,
+            "max_job_id": max_job_id,
+            "pending_jobs": pending_jobs
+        }
+
     # Risoluzione dei certificati CA in sequenza (non nei thread), per evitare una
     # race condition su os.makedirs(CERTIFICATES_DIR) se piu' domini fossero privi
     # di certificato locale contemporaneamente (stesso motivo di export_jobs_to_csv.py).
@@ -349,7 +421,7 @@ def main():
     for index, (domain, username, api_key, cert_path) in enumerate(domains_to_fetch):
         t = threading.Thread(
             target=_thread_target,
-            args=(domain, username, api_key, cert_path, since_utc, results, index),
+            args=(domain, username, api_key, cert_path, since_utc, domain_states[domain], results, index),
         )
         threads.append(t)
         t.start()
@@ -359,7 +431,6 @@ def main():
 
     all_rows = [row for domain_rows in results if domain_rows for row in domain_rows]
 
-    conn = init_db()
     upsert_jobs(conn, all_rows)
     export_csv(conn)
     conn.close()
