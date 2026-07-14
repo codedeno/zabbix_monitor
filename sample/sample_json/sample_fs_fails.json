@@ -1,0 +1,101 @@
+{
+    "data": [
+        {
+            "type": "job",
+            "id": "12",
+            "attributes": {
+                "jobId": 12,
+                "parentJobId": 0,
+                "activeProcessId": 15610,
+                "jobType": "BACKUP",
+                "jobSubType": "IMMEDIATE",
+                "policyType": "STANDARD",
+                "policyName": "Fail_Job",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "Manual",
+                "clientName": "L99801C007056.leonardo.local",
+                "jobOwner": "root",
+                "jobGroup": "other",
+                "backupId": "L99801C007056.leonardo.local_1783590198",
+                "destinationStorageUnitName": "stu_msdp_L03201C006938",
+                "destinationMediaServerName": "L03201C006938.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 71,
+                "state": "REQUEUED",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 0,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 100,
+                "currentOperation": 3,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "acceleratorOptimization": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:43:18.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:43:18.000Z",
+                "lastUpdateTime": "2026-07-09T09:43:46.657Z",
+                "childCount": 0,
+                "jobPath": "12",
+                "retentionLevel": 1,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 1,
+                "elapsedTime": "PT40.54S",
+                "activeElapsedTime": "PT40.54S",
+                "dteMode": "ON",
+                "dedupSpaceRatio": 100,
+                "compressionSpaceRatio": 0,
+                "workloadDisplayName": "L99801C007056.leonardo.local",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/12"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/12/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/12/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590198000:12"
+                }
+            }
+        }
+    ],
+    "meta": {
+        "pagination": {
+            "next": "1783568279000:3",
+            "limit": 10
+        }
+    },
+    "links": {
+        "next": {
+            "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs?page%5Blimit%5D=10&page%5Bafter%5D=1783568279000:3&sort=-startTime,jobId"
+        },
+        "self": {
+            "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs?page%5Blimit%5D=10&sort=-startTime,jobId"
+        },
+        "first": {
+            "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs?page%5Blimit%5D=10&sort=-startTime,jobId"
+        }
+    }
+}

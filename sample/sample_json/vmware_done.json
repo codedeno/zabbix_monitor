@@ -1,0 +1,722 @@
+{
+    "data": [
+        {
+            "type": "job",
+            "id": "9",
+            "attributes": {
+                "jobId": 9,
+                "parentJobId": 8,
+                "activeProcessId": 11698,
+                "jobType": "BACKUP",
+                "jobSubType": "IMMEDIATE",
+                "policyType": "VMWARE",
+                "policyName": "VM_Test",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "Manual",
+                "clientName": "L99800C007060",
+                "jobOwner": "root",
+                "jobGroup": "other",
+                "backupId": "L99800C007060_1783588784",
+                "destinationStorageUnitName": "stu_msdp_L03201C006938",
+                "destinationMediaServerName": "L03201C006938.leonardo.local",
+                "dataMovement": "INSTANTRECOVERYDISK",
+                "streamNumber": 2,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 391126,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 1800191,
+                "kilobytesToTransfer": 0,
+                "transferRate": 51643,
+                "percentComplete": 0,
+                "currentFile": "/\\\\.\\VMFILE0_1783588784",
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 3,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:19:44.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:19:44.000Z",
+                "lastUpdateTime": "2026-07-09T09:20:26.467Z",
+                "assetID": "24394810-23df-4081-87e4-f0944c654158",
+                "assetDisplayableName": "L99800C007060",
+                "childCount": 0,
+                "jobPath": "6.8.9",
+                "retentionLevel": 0,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT52.214S",
+                "activeElapsedTime": "PT52.214S",
+                "dteMode": "ON",
+                "workloadDisplayName": "L99800C007060",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/9"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/9/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/9/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783588784000:9"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "10",
+            "attributes": {
+                "jobId": 10,
+                "parentJobId": 7,
+                "activeProcessId": 11704,
+                "jobType": "BACKUP",
+                "jobSubType": "IMMEDIATE",
+                "policyType": "VMWARE",
+                "policyName": "VM_Test",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "Manual",
+                "clientName": "L99800C007059",
+                "jobOwner": "root",
+                "jobGroup": "other",
+                "backupId": "L99800C007059_1783588784",
+                "destinationStorageUnitName": "stu_msdp_L03201C006938",
+                "destinationMediaServerName": "L03201C006938.leonardo.local",
+                "dataMovement": "INSTANTRECOVERYDISK",
+                "streamNumber": 1,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 390964,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 1200127,
+                "kilobytesToTransfer": 0,
+                "transferRate": 39168,
+                "percentComplete": 0,
+                "currentFile": "/\\\\.\\VMFILE0_1783588784",
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 3,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:19:44.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:19:44.000Z",
+                "lastUpdateTime": "2026-07-09T09:20:26.468Z",
+                "assetID": "3897230a-0162-4061-b983-6dd8200451dc",
+                "assetDisplayableName": "L99800C007059",
+                "childCount": 0,
+                "jobPath": "6.7.10",
+                "retentionLevel": 0,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT52.214S",
+                "activeElapsedTime": "PT52.214S",
+                "dteMode": "ON",
+                "workloadDisplayName": "L99800C007059",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/10"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/10/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/10/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783588784000:10"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "7",
+            "attributes": {
+                "jobId": 7,
+                "parentJobId": 6,
+                "jobType": "SNAPSHOT",
+                "jobSubType": "IMMEDIATE",
+                "policyType": "VMWARE",
+                "policyName": "VM_Test",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "-",
+                "clientName": "L99800C007059",
+                "jobOwner": "root",
+                "jobGroup": "other",
+                "backupId": "L99800C007059_1783588765",
+                "destinationStorageUnitName": "stu_msdp_L03201C006938",
+                "destinationMediaServerName": "L03201C006938.leonardo.local",
+                "dataMovement": "INSTANTRECOVERYDISK",
+                "streamNumber": -1,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 0,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 2,
+                "transportType": "LAN",
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:19:25.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:19:25.000Z",
+                "lastUpdateTime": "2026-07-09T09:19:56.460Z",
+                "assetID": "3897230a-0162-4061-b983-6dd8200451dc",
+                "assetDisplayableName": "L99800C007059",
+                "childCount": 1,
+                "jobPath": "6.7",
+                "retentionLevel": 0,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M11.214S",
+                "activeElapsedTime": "PT1M11.214S",
+                "dteMode": "ON",
+                "workloadDisplayName": "L99800C007059",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/7"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/7/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/7/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783588765000:7"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "8",
+            "attributes": {
+                "jobId": 8,
+                "parentJobId": 6,
+                "jobType": "SNAPSHOT",
+                "jobSubType": "IMMEDIATE",
+                "policyType": "VMWARE",
+                "policyName": "VM_Test",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "-",
+                "clientName": "L99800C007060",
+                "jobOwner": "root",
+                "jobGroup": "other",
+                "backupId": "L99800C007060_1783588765",
+                "destinationStorageUnitName": "stu_msdp_L03201C006938",
+                "destinationMediaServerName": "L03201C006938.leonardo.local",
+                "dataMovement": "INSTANTRECOVERYDISK",
+                "streamNumber": -1,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 0,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 2,
+                "transportType": "LAN",
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:19:25.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:19:25.000Z",
+                "lastUpdateTime": "2026-07-09T09:19:56.462Z",
+                "assetID": "24394810-23df-4081-87e4-f0944c654158",
+                "assetDisplayableName": "L99800C007060",
+                "childCount": 1,
+                "jobPath": "6.8",
+                "retentionLevel": 0,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M11.214S",
+                "activeElapsedTime": "PT1M11.214S",
+                "dteMode": "ON",
+                "workloadDisplayName": "L99800C007060",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/8"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/8/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/8/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783588765000:8"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "6",
+            "attributes": {
+                "jobId": 6,
+                "parentJobId": 0,
+                "jobType": "BACKUP",
+                "jobSubType": "IMMEDIATE",
+                "policyType": "VMWARE",
+                "policyName": "VM_Test",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "-",
+                "clientName": "L03201C006938.leonardo.local",
+                "jobOwner": "root",
+                "jobGroup": "other",
+                "backupId": "MEDIA_SERVER_1783588748",
+                "destinationMediaServerName": "L03201C006938.leonardo.local",
+                "dataMovement": "INSTANTRECOVERYDISK",
+                "streamNumber": -1,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 0,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:19:07.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:19:08.000Z",
+                "lastUpdateTime": "2026-07-09T09:19:36.457Z",
+                "childCount": 2,
+                "jobPath": "6",
+                "retentionLevel": 0,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M29.214S",
+                "activeElapsedTime": "PT1M28.214S",
+                "dteMode": "UNKNOWN",
+                "workloadDisplayName": "L03201C006938.leonardo.local",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/6"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/6/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/6/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783588747000:6"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "5",
+            "attributes": {
+                "jobId": 5,
+                "parentJobId": 0,
+                "activeProcessId": 197315,
+                "jobType": "IMAGEDELETE",
+                "jobOwner": "root",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 0,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:18:07.000Z",
+                "endTime": "2026-07-09T09:18:09.000Z",
+                "activeTryStartTime": "2026-07-09T09:18:07.000Z",
+                "lastUpdateTime": "2026-07-09T09:18:16.391Z",
+                "childCount": 0,
+                "jobPath": "5",
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT2S",
+                "activeElapsedTime": "PT2S",
+                "dteMode": "UNKNOWN"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/5"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/5/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/5/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783588687000:5"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "4",
+            "attributes": {
+                "jobId": 4,
+                "parentJobId": 0,
+                "activeProcessId": 11073,
+                "jobType": "BACKUP",
+                "jobSubType": "SCHEDULED",
+                "policyType": "STANDARD",
+                "policyName": "Dedupe_Catalog_L03201C006938",
+                "scheduleType": "FULL_BACKUP",
+                "scheduleName": "Full",
+                "clientName": "L03201C006938.leonardo.local",
+                "jobOwner": "root",
+                "jobGroup": "root",
+                "backupId": "L03201C006938.leonardo.local_1783588680",
+                "destinationStorageUnitName": "stu_advanced_L03201C006938",
+                "destinationMediaServerName": "L03201C006938.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 118,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 384,
+                "kilobytesToTransfer": 0,
+                "transferRate": 352,
+                "percentComplete": 100,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:18:00.000Z",
+                "endTime": "2026-07-09T09:18:07.000Z",
+                "activeTryStartTime": "2026-07-09T09:18:00.000Z",
+                "lastUpdateTime": "2026-07-09T09:18:16.395Z",
+                "childCount": 0,
+                "jobPath": "4",
+                "retentionLevel": 0,
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT7S",
+                "activeElapsedTime": "PT7S",
+                "dteMode": "ON",
+                "workloadDisplayName": "L03201C006938.leonardo.local",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/4"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/4/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/4/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783588680000:4"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "3",
+            "attributes": {
+                "jobId": 3,
+                "parentJobId": 0,
+                "activeProcessId": 126262,
+                "jobType": "IMAGEDELETE",
+                "jobOwner": "root",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 1,
+                "state": "DONE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 0,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T03:37:59.000Z",
+                "endTime": "2026-07-09T03:38:01.000Z",
+                "activeTryStartTime": "2026-07-09T03:37:59.000Z",
+                "lastUpdateTime": "2026-07-09T03:38:02.005Z",
+                "childCount": 0,
+                "jobPath": "3",
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT2S",
+                "activeElapsedTime": "PT2S",
+                "dteMode": "UNKNOWN"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/3"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/3/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/3/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783568279000:3"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "2",
+            "attributes": {
+                "jobId": 2,
+                "parentJobId": 0,
+                "activeProcessId": 39279,
+                "jobType": "IMAGEDELETE",
+                "jobOwner": "root",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 1,
+                "state": "DONE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 0,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T15:37:59.000Z",
+                "endTime": "2026-07-08T15:38:00.000Z",
+                "activeTryStartTime": "2026-07-08T15:37:59.000Z",
+                "lastUpdateTime": "2026-07-08T15:38:02.163Z",
+                "childCount": 0,
+                "jobPath": "2",
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1S",
+                "activeElapsedTime": "PT1S",
+                "dteMode": "UNKNOWN"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/2"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/2/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/2/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783525079000:2"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "1",
+            "attributes": {
+                "jobId": 1,
+                "parentJobId": 0,
+                "activeProcessId": 26551,
+                "jobType": "IMAGEDELETE",
+                "jobOwner": "root",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 1,
+                "state": "DONE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 0,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-08T14:23:45.000Z",
+                "endTime": "2026-07-08T14:23:46.000Z",
+                "activeTryStartTime": "2026-07-08T14:23:45.000Z",
+                "lastUpdateTime": "2026-07-08T14:23:46.625Z",
+                "childCount": 0,
+                "jobPath": "1",
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1S",
+                "activeElapsedTime": "PT1S",
+                "dteMode": "UNKNOWN"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/1"
+                },
+                "file-lists": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/1/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs/1/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783520625000:1"
+                }
+            }
+        }
+    ],
+    "meta": {
+        "pagination": {
+            "limit": 10
+        }
+    },
+    "links": {
+        "self": {
+            "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs?page%5Blimit%5D=10&sort=-startTime,jobId"
+        },
+        "first": {
+            "href": "https://l99801c007056.leonardo.local/netbackup/admin/jobs?page%5Blimit%5D=10&sort=-startTime,jobId"
+        }
+    }
+}

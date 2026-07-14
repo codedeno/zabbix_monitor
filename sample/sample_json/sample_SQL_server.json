@@ -1,0 +1,810 @@
+{
+    "data": [
+        {
+            "type": "job",
+            "id": "812370",
+            "attributes": {
+                "jobId": 812370,
+                "parentJobId": 812369,
+                "activeProcessId": 413770,
+                "jobType": "BACKUP",
+                "jobSubType": "USERBACKUP",
+                "policyType": "SQL_SERVER",
+                "policyName": "SQL_GOLD_accs5197_APPS01",
+                "scheduleType": "TRANSACTION_LOG_BACKUP",
+                "scheduleName": "Tlog",
+                "clientName": "accs5197.agustawestland.local",
+                "jobOwner": "IT_BckUsr",
+                "jobGroup": "IT_BckUsr",
+                "backupId": "accs5197.agustawestland.local_1783590675",
+                "destinationStorageUnitName": "GOLD_DATABASE_STU_MSDP_L00301C006927",
+                "destinationMediaServerName": "L00301C006927.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 16,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 88,
+                "transferRate": 0,
+                "percentComplete": 0,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 3,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "instanceDatabaseName": "APPS_01\\DBA",
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:51:14.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:51:15.000Z",
+                "lastUpdateTime": "2026-07-09T09:52:44.242Z",
+                "assetID": "3309b82c940737a1fab6af14b4ce9b3f53fbae05795086e9a84400e130c610c6",
+                "assetDisplayableName": "APPS_01\\DBA",
+                "childCount": 0,
+                "jobPath": "812368.812369.812370",
+                "retentionLevel": 3,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M31.62S",
+                "activeElapsedTime": "PT1M30.62S",
+                "dteMode": "ON",
+                "workloadDisplayName": "APPS_01\\DBA",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/812370"
+                },
+                "file-lists": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812370/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812370/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590674000:812370"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "812371",
+            "attributes": {
+                "jobId": 812371,
+                "parentJobId": 812369,
+                "activeProcessId": 413763,
+                "jobType": "BACKUP",
+                "jobSubType": "USERBACKUP",
+                "policyType": "SQL_SERVER",
+                "policyName": "SQL_GOLD_accs5197_APPS01",
+                "scheduleType": "TRANSACTION_LOG_BACKUP",
+                "scheduleName": "Tlog",
+                "clientName": "accs5197.agustawestland.local",
+                "jobOwner": "IT_BckUsr",
+                "jobGroup": "IT_BckUsr",
+                "backupId": "accs5197.agustawestland.local_1783590672",
+                "destinationStorageUnitName": "GOLD_DATABASE_STU_MSDP_L00301C006927",
+                "destinationMediaServerName": "L00301C006927.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 16,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 88,
+                "transferRate": 0,
+                "percentComplete": 0,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 30,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "instanceDatabaseName": "APPS_01\\DBA",
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:51:12.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:51:12.000Z",
+                "lastUpdateTime": "2026-07-09T09:51:34.238Z",
+                "assetID": "3309b82c940737a1fab6af14b4ce9b3f53fbae05795086e9a84400e130c610c6",
+                "assetDisplayableName": "APPS_01\\DBA",
+                "childCount": 0,
+                "jobPath": "812368.812369.812371",
+                "retentionLevel": 3,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M33.62S",
+                "activeElapsedTime": "PT1M33.62S",
+                "dteMode": "ON",
+                "workloadDisplayName": "APPS_01\\DBA",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/812371"
+                },
+                "file-lists": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812371/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812371/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590672000:812371"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "812372",
+            "attributes": {
+                "jobId": 812372,
+                "parentJobId": 812369,
+                "activeProcessId": 413766,
+                "jobType": "BACKUP",
+                "jobSubType": "USERBACKUP",
+                "policyType": "SQL_SERVER",
+                "policyName": "SQL_GOLD_accs5197_APPS01",
+                "scheduleType": "TRANSACTION_LOG_BACKUP",
+                "scheduleName": "Tlog",
+                "clientName": "accs5197.agustawestland.local",
+                "jobOwner": "IT_BckUsr",
+                "jobGroup": "IT_BckUsr",
+                "backupId": "accs5197.agustawestland.local_1783590673",
+                "destinationStorageUnitName": "GOLD_DATABASE_STU_MSDP_L00301C006927",
+                "destinationMediaServerName": "L00301C006927.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 16,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 88,
+                "transferRate": 0,
+                "percentComplete": 0,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 30,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "instanceDatabaseName": "APPS_01\\DBA",
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:51:12.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:51:13.000Z",
+                "lastUpdateTime": "2026-07-09T09:51:34.236Z",
+                "assetID": "3309b82c940737a1fab6af14b4ce9b3f53fbae05795086e9a84400e130c610c6",
+                "assetDisplayableName": "APPS_01\\DBA",
+                "childCount": 0,
+                "jobPath": "812368.812369.812372",
+                "retentionLevel": 3,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M33.62S",
+                "activeElapsedTime": "PT1M32.62S",
+                "dteMode": "ON",
+                "workloadDisplayName": "APPS_01\\DBA",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/812372"
+                },
+                "file-lists": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812372/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812372/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590672000:812372"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "812373",
+            "attributes": {
+                "jobId": 812373,
+                "parentJobId": 812369,
+                "activeProcessId": 3463684,
+                "jobType": "BACKUP",
+                "jobSubType": "USERBACKUP",
+                "policyType": "SQL_SERVER",
+                "policyName": "SQL_GOLD_accs5197_APPS01",
+                "scheduleType": "TRANSACTION_LOG_BACKUP",
+                "scheduleName": "Tlog",
+                "clientName": "accs5197.agustawestland.local",
+                "jobOwner": "IT_BckUsr",
+                "jobGroup": "IT_BckUsr",
+                "backupId": "accs5197.agustawestland.local_1783590674",
+                "destinationStorageUnitName": "GOLD_DATABASE_STU_MSDP_L00301C006927",
+                "destinationMediaServerName": "L00301C006928.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 16,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 88,
+                "transferRate": 0,
+                "percentComplete": 0,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 30,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "instanceDatabaseName": "APPS_01\\DBA",
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:51:12.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:51:14.000Z",
+                "lastUpdateTime": "2026-07-09T09:51:34.237Z",
+                "assetID": "3309b82c940737a1fab6af14b4ce9b3f53fbae05795086e9a84400e130c610c6",
+                "assetDisplayableName": "APPS_01\\DBA",
+                "childCount": 0,
+                "jobPath": "812368.812369.812373",
+                "retentionLevel": 3,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M33.62S",
+                "activeElapsedTime": "PT1M31.62S",
+                "dteMode": "ON",
+                "workloadDisplayName": "APPS_01\\DBA",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/812373"
+                },
+                "file-lists": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812373/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812373/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590672000:812373"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "812369",
+            "attributes": {
+                "jobId": 812369,
+                "parentJobId": 812368,
+                "activeProcessId": 413756,
+                "jobType": "BACKUP",
+                "jobSubType": "SCHEDULED",
+                "policyType": "SQL_SERVER",
+                "policyName": "SQL_GOLD_accs5197_APPS01",
+                "scheduleType": "TRANSACTION_LOG_BACKUP",
+                "scheduleName": "Tlog",
+                "clientName": "accs5197.agustawestland.local",
+                "jobOwner": "root",
+                "jobGroup": "root",
+                "backupId": "accs5197.agustawestland.local_1783590653",
+                "destinationMediaServerName": "L00301C006927.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 515,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 0,
+                "restartable": 1,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": 30,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:50:53.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:50:53.000Z",
+                "lastUpdateTime": "2026-07-09T09:51:34.237Z",
+                "assetID": "b591bc4ef942eaefa5c15f7bf8ce89d04d760b033743074e27ccf833a243122c",
+                "assetDisplayableName": "APPS_01",
+                "childCount": 4,
+                "jobPath": "812368.812369",
+                "retentionLevel": 3,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M52.62S",
+                "activeElapsedTime": "PT1M52.62S",
+                "dteMode": "ON",
+                "workloadDisplayName": "APPS_01",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/812369"
+                },
+                "file-lists": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812369/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812369/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590653000:812369"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "812368",
+            "attributes": {
+                "jobId": 812368,
+                "parentJobId": 0,
+                "jobType": "BACKUP",
+                "jobSubType": "SCHEDULED",
+                "policyType": "SQL_SERVER",
+                "policyName": "SQL_GOLD_accs5197_APPS01",
+                "scheduleType": "TRANSACTION_LOG_BACKUP",
+                "scheduleName": "-",
+                "clientName": "L99901C006880.leonardo.local",
+                "jobOwner": "root",
+                "jobGroup": "root",
+                "backupId": "L99901C006880.leonardo.local_1783590652",
+                "destinationMediaServerName": "L00301C006927.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": -1,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "state": "ACTIVE",
+                "numberOfFiles": 0,
+                "estimatedFiles": 0,
+                "kilobytesTransferred": 0,
+                "kilobytesToTransfer": 0,
+                "transferRate": 0,
+                "percentComplete": 0,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:50:52.000Z",
+                "endTime": "1970-01-01T00:00:00.000Z",
+                "activeTryStartTime": "2026-07-09T09:50:52.000Z",
+                "lastUpdateTime": "2026-07-09T09:51:04.236Z",
+                "childCount": 1,
+                "jobPath": "812368",
+                "retentionLevel": 3,
+                "try": 1,
+                "cancellable": 1,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT1M53.62S",
+                "activeElapsedTime": "PT1M53.62S",
+                "dteMode": "UNKNOWN",
+                "workloadDisplayName": "L99901C006880.leonardo.local",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/812368"
+                },
+                "file-lists": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812368/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812368/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590652000:812368"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "812367",
+            "attributes": {
+                "jobId": 812367,
+                "parentJobId": 812361,
+                "activeProcessId": 413721,
+                "jobType": "BACKUP",
+                "jobSubType": "USERBACKUP",
+                "policyType": "OBACKUP",
+                "policyName": "ORA_SILVER_PROD12_accs3240_RMANCAT",
+                "scheduleType": "ARCHIVE_REDO_LOG_BACKUP",
+                "scheduleName": "Archive",
+                "clientName": "accs3240.agustawestland.local",
+                "jobOwner": "oracle",
+                "jobGroup": "oinstall",
+                "backupId": "accs3240.agustawestland.local_1783590636",
+                "destinationStorageUnitName": "SILVER_DATABASE_STU_MSDP_L00301C006927",
+                "destinationMediaServerName": "L00301C006927.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 1,
+                "estimatedFiles": 1,
+                "kilobytesTransferred": 18976,
+                "kilobytesToTransfer": 0,
+                "transferRate": 72152,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.5,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "instanceDatabaseName": "rmancat",
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:50:35.000Z",
+                "endTime": "2026-07-09T09:50:53.000Z",
+                "activeTryStartTime": "2026-07-09T09:50:36.000Z",
+                "lastUpdateTime": "2026-07-09T09:50:54.234Z",
+                "assetID": "16def28ecda292a757d8e0ec4e2a028e80104a1e22e96b701b3fa213ed341be8",
+                "assetDisplayableName": "rmancat",
+                "childCount": 0,
+                "jobPath": "812360.812361.812367",
+                "retentionLevel": 3,
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT18S",
+                "activeElapsedTime": "PT17S",
+                "dteMode": "OFF",
+                "dedupSpaceRatio": 91.7,
+                "compressionSpaceRatio": 7.8,
+                "workloadDisplayName": "rmancat",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/812367"
+                },
+                "file-lists": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812367/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812367/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590635000:812367"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "812366",
+            "attributes": {
+                "jobId": 812366,
+                "parentJobId": 812361,
+                "activeProcessId": 413674,
+                "jobType": "BACKUP",
+                "jobSubType": "USERBACKUP",
+                "policyType": "OBACKUP",
+                "policyName": "ORA_SILVER_PROD12_accs3240_RMANCAT",
+                "scheduleType": "ARCHIVE_REDO_LOG_BACKUP",
+                "scheduleName": "Archive",
+                "clientName": "accs3240.agustawestland.local",
+                "jobOwner": "oracle",
+                "jobGroup": "oinstall",
+                "backupId": "accs3240.agustawestland.local_1783590610",
+                "destinationStorageUnitName": "SILVER_DATABASE_STU_MSDP_L00301C006927",
+                "destinationMediaServerName": "L00301C006927.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 1,
+                "estimatedFiles": 1,
+                "kilobytesTransferred": 18976,
+                "kilobytesToTransfer": 0,
+                "transferRate": 153032,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.2,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "instanceDatabaseName": "rmancat",
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:50:10.000Z",
+                "endTime": "2026-07-09T09:50:27.000Z",
+                "activeTryStartTime": "2026-07-09T09:50:10.000Z",
+                "lastUpdateTime": "2026-07-09T09:50:34.236Z",
+                "assetID": "16def28ecda292a757d8e0ec4e2a028e80104a1e22e96b701b3fa213ed341be8",
+                "assetDisplayableName": "rmancat",
+                "childCount": 0,
+                "jobPath": "812360.812361.812366",
+                "retentionLevel": 3,
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT17S",
+                "activeElapsedTime": "PT17S",
+                "dteMode": "OFF",
+                "dedupSpaceRatio": 89,
+                "compressionSpaceRatio": 10.2,
+                "workloadDisplayName": "rmancat",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/812366"
+                },
+                "file-lists": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812366/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812366/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590610000:812366"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "812365",
+            "attributes": {
+                "jobId": 812365,
+                "parentJobId": 812361,
+                "activeProcessId": 413626,
+                "jobType": "BACKUP",
+                "jobSubType": "USERBACKUP",
+                "policyType": "OBACKUP",
+                "policyName": "ORA_SILVER_PROD12_accs3240_RMANCAT",
+                "scheduleType": "ARCHIVE_REDO_LOG_BACKUP",
+                "scheduleName": "Archive",
+                "clientName": "accs3240.agustawestland.local",
+                "jobOwner": "oracle",
+                "jobGroup": "oinstall",
+                "backupId": "accs3240.agustawestland.local_1783590584",
+                "destinationStorageUnitName": "SILVER_DATABASE_STU_MSDP_L00301C006927",
+                "destinationMediaServerName": "L00301C006927.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 1,
+                "estimatedFiles": 1,
+                "kilobytesTransferred": 18976,
+                "kilobytesToTransfer": 0,
+                "transferRate": 17377,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.2,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "instanceDatabaseName": "rmancat",
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:49:44.000Z",
+                "endTime": "2026-07-09T09:50:01.000Z",
+                "activeTryStartTime": "2026-07-09T09:49:44.000Z",
+                "lastUpdateTime": "2026-07-09T09:50:04.236Z",
+                "assetID": "16def28ecda292a757d8e0ec4e2a028e80104a1e22e96b701b3fa213ed341be8",
+                "assetDisplayableName": "rmancat",
+                "childCount": 0,
+                "jobPath": "812360.812361.812365",
+                "retentionLevel": 3,
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT17S",
+                "activeElapsedTime": "PT17S",
+                "dteMode": "OFF",
+                "dedupSpaceRatio": 89,
+                "compressionSpaceRatio": 10.2,
+                "workloadDisplayName": "rmancat",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/812365"
+                },
+                "file-lists": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812365/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812365/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590584000:812365"
+                }
+            }
+        },
+        {
+            "type": "job",
+            "id": "812364",
+            "attributes": {
+                "jobId": 812364,
+                "parentJobId": 812356,
+                "activeProcessId": 413623,
+                "jobType": "BACKUP",
+                "jobSubType": "USERBACKUP",
+                "policyType": "OBACKUP",
+                "policyName": "ORACLE_SILVER_L00301C003515_QPDV",
+                "scheduleType": "ARCHIVE_REDO_LOG_BACKUP",
+                "scheduleName": "Archive",
+                "clientName": "L00301C003515.agustawestland.local",
+                "jobOwner": "oracle",
+                "jobGroup": "oinstall",
+                "backupId": "L00301C003515.agustawestland.local_1783590584",
+                "destinationStorageUnitName": "SILVER_DATABASE_STU_MSDP_L00301C006927",
+                "destinationMediaServerName": "L00301C006927.leonardo.local",
+                "dataMovement": "STANDARD",
+                "streamNumber": 0,
+                "copyNumber": 0,
+                "priority": 0,
+                "compression": 0,
+                "status": 0,
+                "state": "DONE",
+                "numberOfFiles": 1,
+                "estimatedFiles": 1,
+                "kilobytesTransferred": 11552,
+                "kilobytesToTransfer": 0,
+                "transferRate": 17013,
+                "percentComplete": 100,
+                "restartable": 0,
+                "suspendable": 0,
+                "resumable": 0,
+                "frozenImage": 0,
+                "transportType": "LAN",
+                "dedupRatio": 99.1,
+                "currentOperation": -99,
+                "sessionId": 0,
+                "numberOfTapeToEject": 0,
+                "submissionType": 0,
+                "instanceDatabaseName": "QPDV",
+                "auditDomainType": 0,
+                "startTime": "2026-07-09T09:49:43.000Z",
+                "endTime": "2026-07-09T09:49:57.000Z",
+                "activeTryStartTime": "2026-07-09T09:49:44.000Z",
+                "lastUpdateTime": "2026-07-09T09:50:04.235Z",
+                "assetID": "7ac9b02bb428be192c7d96398f91e1d637bec6a12a00f58539d281e5fc9a0c37",
+                "assetDisplayableName": "qpdv",
+                "childCount": 0,
+                "jobPath": "812355.812356.812364",
+                "retentionLevel": 3,
+                "try": 1,
+                "cancellable": 0,
+                "jobQueueReason": -99,
+                "kilobytesDataTransferred": 0,
+                "elapsedTime": "PT14S",
+                "activeElapsedTime": "PT13S",
+                "dteMode": "OFF",
+                "dedupSpaceRatio": 76.4,
+                "compressionSpaceRatio": 22.7,
+                "workloadDisplayName": "qpdv",
+                "offHostType": "STANDARD"
+            },
+            "links": {
+                "self": {
+                    "href": "/admin/jobs/812364"
+                },
+                "file-lists": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812364/file-lists"
+                },
+                "try-logs": {
+                    "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs/812364/try-logs"
+                }
+            },
+            "meta": {
+                "page": {
+                    "cursor": "1783590583000:812364"
+                }
+            }
+        }
+    ],
+    "meta": {
+        "pagination": {
+            "next": "1783590583000:812364",
+            "limit": 10
+        }
+    },
+    "links": {
+        "next": {
+            "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs?page%5Blimit%5D=10&page%5Bafter%5D=1783590583000:812364&sort=-startTime,jobId"
+        },
+        "self": {
+            "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs?page%5Blimit%5D=10&sort=-startTime,jobId"
+        },
+        "first": {
+            "href": "https://l99901c006880.leonardo.local/netbackup/admin/jobs?page%5Blimit%5D=10&sort=-startTime,jobId"
+        }
+    }
+}
