@@ -48,6 +48,7 @@ from netbackup_auth import (
     esegui_logout,
     gestisci_certificato,
 )
+import zabbix_sender
 
 DB_PATH = "netbackup_jobs.db"
 CSV_PATH = "jobs_export.csv"
@@ -115,6 +116,7 @@ CSV_FIELDS = [
     "schedule_name",
     "percent_complete",
     "result",
+    "sent",
 ]
 
 CSV_HEADERS = [
@@ -131,6 +133,7 @@ CSV_HEADERS = [
     "$11_schedule_name",
     "$12_%compl",
     "$13_res",
+    "$14_sent",
 ]
 
 DDL_JOBS_TABLE = """
@@ -148,6 +151,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     schedule_name    TEXT,
     percent_complete INTEGER,
     result           TEXT    NOT NULL,
+    sent             TEXT    DEFAULT 'FALSE',
     PRIMARY KEY (primary_server, job_id)
 )
 """
@@ -156,7 +160,16 @@ CREATE TABLE IF NOT EXISTS jobs (
 def init_db(db_path=DB_PATH):
     """Apre (creandolo se necessario) il database SQLite con la tabella jobs."""
     conn = sqlite3.connect(db_path)
+    # Imposta esplicitamente che le righe vengano restituite come tuple per compatibilità,
+    # anche se cursor.description è disponibile
+    conn.row_factory = None
     conn.execute(DDL_JOBS_TABLE)
+    
+    # Migrazione per aggiungere la colonna sent nei DB esistenti
+    try:
+        conn.execute("ALTER TABLE jobs ADD COLUMN sent TEXT DEFAULT 'FALSE'")
+    except sqlite3.OperationalError:
+        pass # La colonna esiste già
     
     # Migrazione per dati storici: rimuove lo spazio dal timestamp di aggiornamento
     conn.execute("UPDATE jobs SET updated = replace(updated, ' ', 'T') WHERE updated LIKE '% %'")
@@ -524,6 +537,10 @@ def main():
     all_rows = [row for domain_rows in results if domain_rows for row in domain_rows]
 
     upsert_jobs(conn, all_rows)
+    
+    # Invio a Zabbix dei job completati e non ancora inviati
+    zabbix_sender.process_and_send(conn, log_api_command)
+    
     export_csv(conn)
     conn.close()
 
