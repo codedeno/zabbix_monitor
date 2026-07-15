@@ -288,6 +288,17 @@ def fetch_single_job(domain, headers, cert_path, job_id):
         print(f"[{domain}] Errore di connessione per job {job_id}: {exc}")
         return None
 
+    if response.status_code == 404:
+        print(f"[{domain}] Job {job_id} non trovato (404). Sarà marcato come DONE/KO.")
+        return {
+            "primary_server": domain,
+            "job_id": job_id,
+            "state": "DONE",
+            "result": "KO",
+            "updated": to_rome_str(datetime.now(timezone.utc)),
+            "is_404": True,
+        }
+
     if response.status_code != 200:
         print(f"[{domain}] Errore {response.status_code} su job {job_id}: {response.text}")
         return None
@@ -325,19 +336,32 @@ def upsert_jobs(conn, rows):
         existing = cur.fetchone()
 
         if existing is None:
-            cur.execute(
-                """
-                INSERT INTO jobs (
-                    primary_server, job_id, job_type, policy_type, state, updated, client,
-                    status, policy_name, schedule_type, schedule_name, percent_complete, result
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    row["primary_server"], row["job_id"], row["job_type"], row["policy_type"], row["state"],
-                    row["updated"], row["client"], row["status"], row["policy_name"],
-                    row["schedule_type"], row["schedule_name"], row["percent_complete"], row["result"],
-                ),
-            )
+            if row.get("is_404"):
+                cur.execute(
+                    """
+                    INSERT INTO jobs (
+                        primary_server, job_id, state, updated, result
+                    ) VALUES (?, ?, ?, ?, ?)
+                    """,
+                    (
+                        row["primary_server"], row["job_id"], row["state"],
+                        row["updated"], row["result"],
+                    ),
+                )
+            else:
+                cur.execute(
+                    """
+                    INSERT INTO jobs (
+                        primary_server, job_id, job_type, policy_type, state, updated, client,
+                        status, policy_name, schedule_type, schedule_name, percent_complete, result
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        row["primary_server"], row["job_id"], row["job_type"], row["policy_type"], row["state"],
+                        row["updated"], row["client"], row["status"], row["policy_name"],
+                        row["schedule_type"], row["schedule_name"], row["percent_complete"], row["result"],
+                    ),
+                )
             inserted += 1
             continue
 
@@ -346,6 +370,18 @@ def upsert_jobs(conn, rows):
         if existing_state == "DONE":
             # Job gia' concluso in precedenza: stato terminale, non si aggiorna piu'.
             unchanged += 1
+            continue
+
+        if row.get("is_404"):
+            cur.execute(
+                """
+                UPDATE jobs SET
+                    state = ?, updated = ?, result = ?
+                WHERE primary_server = ? AND job_id = ?
+                """,
+                (row["state"], row["updated"], row["result"], row["primary_server"], row["job_id"]),
+            )
+            changed += 1
             continue
 
         if row["state"] != "DONE" and row["updated"] == existing_updated and row["percent_complete"] == existing_percent:
