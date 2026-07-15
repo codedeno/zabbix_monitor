@@ -1,0 +1,5 @@
+{
+    "Zabbix_server": "[IP_ADDRESS]",
+    "port": 10051,
+    "item_key": "netbackup.job.payload"
+}
